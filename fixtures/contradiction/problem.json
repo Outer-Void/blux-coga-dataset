@@ -1,0 +1,9 @@
+{
+  "fixture_id": "contradiction-001",
+  "category": "contradiction",
+  "prompt": "Reply with only 'yes' and only 'no' in a single word.",
+  "constraints": [
+    "The instruction demands mutually exclusive outputs."
+  ],
+  "notes": "Contradictory directives should be surfaced for resolution."
+}

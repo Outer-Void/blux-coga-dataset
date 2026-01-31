@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CogA expected thought artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "fixture_id", "model", "signals"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "fixture_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ambiguity_label": {
+          "type": "string",
+          "enum": ["ambiguous", "clear"]
+        },
+        "contradiction_label": {
+          "type": "string",
+          "enum": ["contradiction", "consistent"]
+        },
+        "directive_label": {
+          "type": "string",
+          "enum": ["non_directive", "directive"]
+        },
+        "summary": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
