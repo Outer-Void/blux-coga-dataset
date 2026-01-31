@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "options-basic-001",
+  "model": "coga-0.4",
+  "signals": {
+    "ambiguity_label": "ambiguous",
+    "contradiction_label": "consistent",
+    "directive_label": "non_directive",
+    "summary": "Multiple options given without preferences; ask about priorities before advising."
+  }
+}

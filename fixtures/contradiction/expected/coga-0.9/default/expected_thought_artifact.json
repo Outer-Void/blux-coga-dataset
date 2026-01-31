@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "contradiction-001",
+  "model": "coga-0.9",
+  "signals": {
+    "ambiguity_label": "clear",
+    "contradiction_label": "contradiction",
+    "directive_label": "non_directive",
+    "summary": "The request contains mutually exclusive instructions."
+  }
+}

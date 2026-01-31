@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "options-basic-001",
+  "model": "coga-0.9",
+  "verdict": {
+    "classification": "multi_option",
+    "should_ask_clarification": true,
+    "should_refuse": false,
+    "behavior": "non_directive",
+    "notes": "Ask about time, cost, and comfort priorities before comparing options."
+  }
+}

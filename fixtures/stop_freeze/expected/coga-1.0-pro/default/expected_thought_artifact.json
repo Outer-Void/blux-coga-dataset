@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "stop-freeze-001",
+  "model": "coga-1.0-pro",
+  "signals": {
+    "ambiguity_label": "clear",
+    "contradiction_label": "consistent",
+    "directive_label": "non_directive",
+    "summary": "Request attempts to access internal reasoning; response should be constrained."
+  }
+}

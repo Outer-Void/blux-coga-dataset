@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "unclear-min-delta-001",
+  "model": "coga-0.5",
+  "verdict": {
+    "classification": "multi_option",
+    "should_ask_clarification": true,
+    "should_refuse": false,
+    "behavior": "non_directive",
+    "notes": "Confirm whether any scheduling constraint exists before choosing a time."
+  }
+}
