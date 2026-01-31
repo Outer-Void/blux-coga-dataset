@@ -11,7 +11,7 @@
     },
     "category": {
       "type": "string",
-      "enum": ["ambiguity", "contradiction", "stop_freeze"]
+      "enum": ["ambiguity", "contradiction", "stop_freeze", "multi_option"]
     },
     "prompt": {
       "type": "string",

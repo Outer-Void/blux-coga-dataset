@@ -19,14 +19,25 @@ for fixture_dir in "${ROOT_DIR}"/fixtures/*; do
   problem_path="${fixture_dir}/problem.json"
   expected_thought="${fixture_dir}/expected_thought_artifact.json"
   expected_verdict="${fixture_dir}/expected_reasoning_verdict.json"
+  expected_report="${fixture_dir}/report.json"
 
   actual_thought=$(mktemp)
   actual_verdict=$(mktemp)
+  actual_report=""
 
-  "${COGA_CMD}" \
-    --problem "${problem_path}" \
-    --output-thought "${actual_thought}" \
-    --output-verdict "${actual_verdict}"
+  if [[ -f "${expected_report}" ]]; then
+    actual_report=$(mktemp)
+    "${COGA_CMD}" \
+      --problem "${problem_path}" \
+      --output-thought "${actual_thought}" \
+      --output-verdict "${actual_verdict}" \
+      --output-report "${actual_report}"
+  else
+    "${COGA_CMD}" \
+      --problem "${problem_path}" \
+      --output-thought "${actual_thought}" \
+      --output-verdict "${actual_verdict}"
+  fi
 
   if ! diff -u <(jq -S . "${expected_thought}") <(jq -S . "${actual_thought}"); then
     status=1
@@ -34,6 +45,13 @@ for fixture_dir in "${ROOT_DIR}"/fixtures/*; do
 
   if ! diff -u <(jq -S . "${expected_verdict}") <(jq -S . "${actual_verdict}"); then
     status=1
+  fi
+
+  if [[ -n "${actual_report}" ]]; then
+    if ! diff -u <(jq -S . "${expected_report}") <(jq -S . "${actual_report}"); then
+      status=1
+    fi
+    rm -f "${actual_report}"
   fi
 
   rm -f "${actual_thought}" "${actual_verdict}"

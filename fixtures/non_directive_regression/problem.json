@@ -1,0 +1,10 @@
+{
+  "fixture_id": "non-directive-regression-001",
+  "category": "multi_option",
+  "prompt": "Should I invest in index fund A or index fund B?",
+  "constraints": [
+    "User is asking for a choice between two options without goals or risk tolerance.",
+    "Response should be non-directive and ask clarifying questions."
+  ],
+  "notes": "Regression check to prevent directive single-option recommendations."
+}
