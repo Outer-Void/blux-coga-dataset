@@ -30,14 +30,24 @@ for fixture_dir in "${ROOT_DIR}"/fixtures/*; do
     continue
   fi
 
+  fixture_profile_id=$(jq -r '.required_profile_id // empty' "${fixture_dir}/problem.json")
+
   for model in "${models[@]}"; do
     for pack in "${packs[@]}"; do
-      expected_dir="${fixture_dir}/expected/${model}/${pack}"
+      if [[ -n "${fixture_profile_id}" ]]; then
+        expected_dir="${fixture_dir}/expected/${model}/${fixture_profile_id}/${pack}"
+      else
+        expected_dir="${fixture_dir}/expected/${model}/${pack}"
+      fi
       expected_thought="${expected_dir}/expected_thought_artifact.json"
       expected_verdict="${expected_dir}/expected_reasoning_verdict.json"
 
       if [[ ! -f "${expected_thought}" || ! -f "${expected_verdict}" ]]; then
-        echo "Missing expected outputs for ${fixture_dir##*/} (${model}/${pack})." >&2
+        if [[ -n "${fixture_profile_id}" ]]; then
+          echo "Missing expected outputs for ${fixture_dir##*/} (${model}/${fixture_profile_id}/${pack})." >&2
+        else
+          echo "Missing expected outputs for ${fixture_dir##*/} (${model}/${pack})." >&2
+        fi
         status=1
       fi
     done

@@ -62,3 +62,18 @@ Override the default model version or reasoning pack with:
 ```sh
 MODEL_VERSION=coga-1.0 REASONING_PACK=default COGA_CMD=coga ./scripts/run_harness.sh
 ```
+
+Profile-specific fixtures can declare `required_profile_id` (and optional
+`required_profile_version`) in `problem.json`. When present, expected outputs
+may live under:
+
+```
+fixtures/<case>/expected/<model_version>/<profile_id>/<reasoning_pack>/
+```
+
+Run the harness with profile context by setting `PROFILE_ID` (and optionally
+`PROFILE_VERSION`):
+
+```sh
+PROFILE_ID=pro PROFILE_VERSION=2024-09 MODEL_VERSION=coga-1.0 REASONING_PACK=default COGA_CMD=coga ./scripts/run_harness.sh
+```
