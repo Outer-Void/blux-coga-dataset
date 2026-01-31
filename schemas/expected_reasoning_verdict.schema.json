@@ -24,7 +24,7 @@
       "properties": {
         "classification": {
           "type": "string",
-          "enum": ["ambiguity", "contradiction", "stop_freeze"]
+          "enum": ["ambiguity", "contradiction", "stop_freeze", "multi_option"]
         },
         "should_ask_clarification": {
           "type": "boolean"

@@ -1,0 +1,10 @@
+{
+  "fixture_id": "options-basic-001",
+  "category": "multi_option",
+  "prompt": "I can either take the train or drive to work tomorrow. Which should I choose?",
+  "constraints": [
+    "User has provided multiple options without preferences or constraints.",
+    "Response should stay non-directive and ask for priorities."
+  ],
+  "notes": "Multi-option choice should trigger a clarifying, non-directive response."
+}

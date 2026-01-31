@@ -1,0 +1,10 @@
+{
+  "fixture_id": "comparison-basic-001",
+  "category": "multi_option",
+  "prompt": "Compare working remotely versus in an office and highlight trade-offs.",
+  "constraints": [
+    "User requests a comparison of multiple options.",
+    "Response should remain non-directive and neutral."
+  ],
+  "notes": "Comparison of options should not prescribe a single choice."
+}
