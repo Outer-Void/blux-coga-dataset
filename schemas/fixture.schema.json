@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CogA fixture problem",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fixture_id", "category", "prompt"],
+  "properties": {
+    "fixture_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "enum": ["ambiguity", "contradiction", "stop_freeze"]
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
