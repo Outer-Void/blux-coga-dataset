@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "contradiction-001",
+  "model": "coga-0.7",
+  "verdict": {
+    "classification": "contradiction",
+    "should_ask_clarification": true,
+    "should_refuse": false,
+    "behavior": "non_directive",
+    "notes": "Ask which single-word response is preferred."
+  }
+}

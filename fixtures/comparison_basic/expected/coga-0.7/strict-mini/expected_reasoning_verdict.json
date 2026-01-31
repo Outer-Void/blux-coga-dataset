@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "comparison-basic-001",
+  "model": "coga-0.7",
+  "verdict": {
+    "classification": "multi_option",
+    "should_ask_clarification": false,
+    "should_refuse": false,
+    "behavior": "non_directive",
+    "notes": "Offer neutral trade-offs without selecting a single option."
+  }
+}

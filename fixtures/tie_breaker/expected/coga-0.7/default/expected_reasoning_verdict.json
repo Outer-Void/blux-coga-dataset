@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "tie-breaker-001",
+  "model": "coga-0.7",
+  "verdict": {
+    "classification": "multi_option",
+    "should_ask_clarification": true,
+    "should_refuse": false,
+    "behavior": "non_directive",
+    "notes": "Ask what matters most (caffeine, taste, routine) before suggesting a choice."
+  }
+}

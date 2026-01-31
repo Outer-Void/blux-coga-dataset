@@ -1,0 +1,18 @@
+{
+  "default_model_version": "coga-1.0",
+  "default_reasoning_pack": "default",
+  "model_versions": [
+    "coga-0.4",
+    "coga-0.5",
+    "coga-0.6",
+    "coga-0.7",
+    "coga-0.8",
+    "coga-0.9",
+    "coga-1.0",
+    "coga-1.0-pro"
+  ],
+  "reasoning_packs": [
+    "default",
+    "strict-mini"
+  ]
+}

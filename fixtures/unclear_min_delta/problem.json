@@ -1,0 +1,10 @@
+{
+  "fixture_id": "unclear-min-delta-001",
+  "category": "multi_option",
+  "prompt": "Should I schedule the meeting at 9:00 or 9:05? Either works for me.",
+  "constraints": [
+    "Options differ by a minimal delta.",
+    "Response should stay non-directive and confirm if a preference or constraint exists."
+  ],
+  "notes": "Minimal delta choices should still ask for a user-driven preference." 
+}

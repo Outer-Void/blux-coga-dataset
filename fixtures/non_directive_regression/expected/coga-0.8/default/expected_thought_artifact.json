@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "non-directive-regression-001",
+  "model": "coga-0.8",
+  "signals": {
+    "ambiguity_label": "ambiguous",
+    "contradiction_label": "consistent",
+    "directive_label": "non_directive",
+    "summary": "Investment choice requires goals and risk tolerance; avoid prescribing a pick."
+  }
+}

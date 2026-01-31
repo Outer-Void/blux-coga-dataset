@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "comparison-basic-001",
+  "model": "coga-0.9",
+  "signals": {
+    "ambiguity_label": "clear",
+    "contradiction_label": "consistent",
+    "directive_label": "non_directive",
+    "summary": "Provide balanced comparison without making the decision for the user."
+  }
+}

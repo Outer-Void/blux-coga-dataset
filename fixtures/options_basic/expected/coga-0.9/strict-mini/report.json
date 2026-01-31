@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "options-basic-001",
+  "model": "coga-0.9",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "classification",
+      "expected": "multi_option",
+      "observed": "multi_option"
+    },
+    {
+      "name": "behavior",
+      "expected": "non_directive",
+      "observed": "non_directive"
+    }
+  ],
+  "notes": "Confirms multi-option classification with a non-directive stance."
+}

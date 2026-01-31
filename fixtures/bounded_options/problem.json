@@ -1,0 +1,10 @@
+{
+  "fixture_id": "bounded-options-001",
+  "category": "multi_option",
+  "prompt": "We could pick sushi, pizza, tacos, or ramen for dinner tonight. Which should we choose?",
+  "constraints": [
+    "The options list is bounded and explicit.",
+    "Response should stay non-directive and ask for preferences to break the tie."
+  ],
+  "notes": "Use bounded option enumeration without assuming a default preference."
+}

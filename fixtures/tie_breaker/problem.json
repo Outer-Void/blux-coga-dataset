@@ -1,0 +1,10 @@
+{
+  "fixture_id": "tie-breaker-001",
+  "category": "multi_option",
+  "prompt": "I like coffee and tea equally this morning. Which should I pick?",
+  "constraints": [
+    "User expresses equal preference for both options.",
+    "Response should avoid directive selection and ask for a tiebreaker criterion."
+  ],
+  "notes": "Deterministic tie-breaking should request a user priority instead of picking." 
+}

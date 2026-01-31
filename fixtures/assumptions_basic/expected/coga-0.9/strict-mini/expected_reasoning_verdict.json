@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "assumptions-basic-001",
+  "model": "coga-0.9",
+  "verdict": {
+    "classification": "ambiguity",
+    "should_ask_clarification": true,
+    "should_refuse": false,
+    "behavior": "non_directive",
+    "notes": "Ask for dates, origin, and budget before recommending flights."
+  }
+}

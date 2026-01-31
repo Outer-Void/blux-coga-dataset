@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "fixture_id": "comparison-basic-001",
+  "model": "coga-0.7",
+  "status": "pass",
+  "checks": [
+    {
+      "name": "classification",
+      "expected": "multi_option",
+      "observed": "multi_option"
+    },
+    {
+      "name": "behavior",
+      "expected": "non_directive",
+      "observed": "non_directive"
+    }
+  ],
+  "notes": "Ensures comparisons stay balanced and non-directive."
+}

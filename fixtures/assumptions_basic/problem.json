@@ -1,0 +1,10 @@
+{
+  "fixture_id": "assumptions-basic-001",
+  "category": "ambiguity",
+  "prompt": "Book the best flight to NYC for me.",
+  "constraints": [
+    "Request lacks dates, departure city, and budget.",
+    "Response should ask clarifying questions instead of assuming details."
+  ],
+  "notes": "Assumption gaps should trigger clarification for missing constraints." 
+}
