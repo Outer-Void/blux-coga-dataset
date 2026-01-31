@@ -24,6 +24,18 @@
         "minLength": 1
       }
     },
+    "required_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_profile_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "device": {
+      "type": "string",
+      "minLength": 1
+    },
     "notes": {
       "type": "string"
     }

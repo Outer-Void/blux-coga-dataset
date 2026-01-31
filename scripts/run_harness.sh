@@ -19,6 +19,8 @@ DEFAULT_MODEL=$(jq -r '.default_model_version' "${MATRIX_PATH}")
 DEFAULT_PACK=$(jq -r '.default_reasoning_pack' "${MATRIX_PATH}")
 MODEL_VERSION=${MODEL_VERSION:-${DEFAULT_MODEL}}
 REASONING_PACK=${REASONING_PACK:-${DEFAULT_PACK}}
+PROFILE_ID=${PROFILE_ID:-}
+PROFILE_VERSION=${PROFILE_VERSION:-}
 
 status=0
 
@@ -28,7 +30,39 @@ for fixture_dir in "${ROOT_DIR}"/fixtures/*; do
   fi
 
   problem_path="${fixture_dir}/problem.json"
-  expected_dir="${fixture_dir}/expected/${MODEL_VERSION}/${REASONING_PACK}"
+  fixture_profile_id=$(jq -r '.required_profile_id // empty' "${problem_path}")
+  fixture_profile_version=$(jq -r '.required_profile_version // empty' "${problem_path}")
+  profile_id="${PROFILE_ID:-${fixture_profile_id}}"
+
+  if [[ -n "${fixture_profile_id}" && -n "${PROFILE_ID}" && "${PROFILE_ID}" != "${fixture_profile_id}" ]]; then
+    echo "Profile ID mismatch for ${fixture_dir##*/}: expected ${fixture_profile_id}, got ${PROFILE_ID}." >&2
+    status=1
+    continue
+  fi
+
+  if [[ -n "${fixture_profile_version}" && -n "${PROFILE_VERSION}" && "${PROFILE_VERSION}" != "${fixture_profile_version}" ]]; then
+    echo "Profile version mismatch for ${fixture_dir##*/}: expected ${fixture_profile_version}, got ${PROFILE_VERSION}." >&2
+    status=1
+    continue
+  fi
+
+  if [[ -n "${fixture_profile_id}" && -z "${PROFILE_ID}" ]]; then
+    echo "Fixture ${fixture_dir##*/} requires profile ${fixture_profile_id}; set PROFILE_ID to run." >&2
+    status=1
+    continue
+  fi
+
+  if [[ -n "${fixture_profile_version}" && -z "${PROFILE_VERSION}" ]]; then
+    echo "Fixture ${fixture_dir##*/} requires profile version ${fixture_profile_version}; set PROFILE_VERSION to run." >&2
+    status=1
+    continue
+  fi
+
+  if [[ -n "${profile_id}" ]]; then
+    expected_dir="${fixture_dir}/expected/${MODEL_VERSION}/${profile_id}/${REASONING_PACK}"
+  else
+    expected_dir="${fixture_dir}/expected/${MODEL_VERSION}/${REASONING_PACK}"
+  fi
   expected_thought="${expected_dir}/expected_thought_artifact.json"
   expected_verdict="${expected_dir}/expected_reasoning_verdict.json"
   expected_report="${expected_dir}/report.json"
