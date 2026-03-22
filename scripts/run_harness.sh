@@ -1,112 +1,78 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/usr/bin/env python3
+import json
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
 
-COGA_CMD=${COGA_CMD:-coga}
-ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
-MATRIX_PATH="${ROOT_DIR}/fixtures/fixture_matrix.json"
+ROOT = Path(__file__).resolve().parents[1]
+MATRIX = json.loads((ROOT / 'fixtures' / 'fixture_matrix.json').read_text())
+MODEL_VERSION = os.environ.get('MODEL_VERSION', MATRIX['canonical_model_version'])
+REASONING_PACK = os.environ.get('REASONING_PACK', MATRIX['reasoning_packs'][0])
 
-if [[ ! -f "${MATRIX_PATH}" ]]; then
-  echo "Missing fixture matrix at ${MATRIX_PATH}." >&2
-  exit 1
-fi
 
-if ! command -v jq >/dev/null 2>&1; then
-  echo "jq is required for canonical JSON comparison." >&2
-  exit 1
-fi
+def stable(data):
+    return json.dumps(data, sort_keys=True, separators=(',', ':'))
 
-DEFAULT_MODEL=$(jq -r '.default_model_version' "${MATRIX_PATH}")
-DEFAULT_PACK=$(jq -r '.default_reasoning_pack' "${MATRIX_PATH}")
-MODEL_VERSION=${MODEL_VERSION:-${DEFAULT_MODEL}}
-REASONING_PACK=${REASONING_PACK:-${DEFAULT_PACK}}
-PROFILE_ID=${PROFILE_ID:-}
-PROFILE_VERSION=${PROFILE_VERSION:-}
 
-status=0
+def engine_cmd(problem_path: Path, output_dir: Path):
+    repo = os.environ.get('BLUX_COGA_REPO')
+    if not repo:
+        sibling = ROOT.parent / 'blux-coga'
+        if sibling.exists():
+            repo = str(sibling)
+    profile = os.environ.get('PROFILE_ID')
+    profile_file = os.environ.get('PROFILE_FILE')
+    if repo:
+        repo_path = Path(repo)
+        venv_python = repo_path / '.venv' / 'bin' / 'python'
+        if venv_python.exists():
+            cmd = [str(venv_python), '-m', 'blux_coga', '--input', str(problem_path), '--output-dir', str(output_dir)]
+        else:
+            cmd = [str(repo_path / 'CogA.sh'), '--in', str(problem_path), '--out', str(output_dir)]
+        cwd = repo
+    else:
+        binary = os.environ.get('BLUX_COGA_BIN', 'blux-coga')
+        cmd = [binary, '--input', str(problem_path), '--output-dir', str(output_dir)]
+        cwd = str(ROOT)
+    if profile:
+        cmd += ['--profile', profile]
+    if profile_file:
+        cmd += ['--profile-file', profile_file]
+    return cmd, cwd
 
-for fixture_dir in "${ROOT_DIR}"/fixtures/*; do
-  if [[ ! -d "${fixture_dir}" ]]; then
-    continue
-  fi
-
-  problem_path="${fixture_dir}/problem.json"
-  fixture_profile_id=$(jq -r '.required_profile_id // empty' "${problem_path}")
-  fixture_profile_version=$(jq -r '.required_profile_version // empty' "${problem_path}")
-  profile_id="${PROFILE_ID:-${fixture_profile_id}}"
-
-  if [[ -n "${fixture_profile_id}" && -n "${PROFILE_ID}" && "${PROFILE_ID}" != "${fixture_profile_id}" ]]; then
-    echo "Profile ID mismatch for ${fixture_dir##*/}: expected ${fixture_profile_id}, got ${PROFILE_ID}." >&2
-    status=1
-    continue
-  fi
-
-  if [[ -n "${fixture_profile_version}" && -n "${PROFILE_VERSION}" && "${PROFILE_VERSION}" != "${fixture_profile_version}" ]]; then
-    echo "Profile version mismatch for ${fixture_dir##*/}: expected ${fixture_profile_version}, got ${PROFILE_VERSION}." >&2
-    status=1
-    continue
-  fi
-
-  if [[ -n "${fixture_profile_id}" && -z "${PROFILE_ID}" ]]; then
-    echo "Fixture ${fixture_dir##*/} requires profile ${fixture_profile_id}; set PROFILE_ID to run." >&2
-    status=1
-    continue
-  fi
-
-  if [[ -n "${fixture_profile_version}" && -z "${PROFILE_VERSION}" ]]; then
-    echo "Fixture ${fixture_dir##*/} requires profile version ${fixture_profile_version}; set PROFILE_VERSION to run." >&2
-    status=1
-    continue
-  fi
-
-  if [[ -n "${profile_id}" ]]; then
-    expected_dir="${fixture_dir}/expected/${MODEL_VERSION}/${profile_id}/${REASONING_PACK}"
-  else
-    expected_dir="${fixture_dir}/expected/${MODEL_VERSION}/${REASONING_PACK}"
-  fi
-  expected_thought="${expected_dir}/expected_thought_artifact.json"
-  expected_verdict="${expected_dir}/expected_reasoning_verdict.json"
-  expected_report="${expected_dir}/report.json"
-
-  if [[ ! -f "${expected_thought}" || ! -f "${expected_verdict}" ]]; then
-    echo "Missing expected outputs for ${fixture_dir##*/} (${MODEL_VERSION}/${REASONING_PACK})." >&2
-    status=1
-    continue
-  fi
-
-  actual_thought=$(mktemp)
-  actual_verdict=$(mktemp)
-  actual_report=""
-
-  if [[ -f "${expected_report}" ]]; then
-    actual_report=$(mktemp)
-    "${COGA_CMD}" \
-      --problem "${problem_path}" \
-      --output-thought "${actual_thought}" \
-      --output-verdict "${actual_verdict}" \
-      --output-report "${actual_report}"
-  else
-    "${COGA_CMD}" \
-      --problem "${problem_path}" \
-      --output-thought "${actual_thought}" \
-      --output-verdict "${actual_verdict}"
-  fi
-
-  if ! diff -u <(jq -S . "${expected_thought}") <(jq -S . "${actual_thought}"); then
-    status=1
-  fi
-
-  if ! diff -u <(jq -S . "${expected_verdict}") <(jq -S . "${actual_verdict}"); then
-    status=1
-  fi
-
-  if [[ -n "${actual_report}" ]]; then
-    if ! diff -u <(jq -S . "${expected_report}") <(jq -S . "${actual_report}"); then
-      status=1
-    fi
-    rm -f "${actual_report}"
-  fi
-
-  rm -f "${actual_thought}" "${actual_verdict}"
-done
-
-exit ${status}
+status = 0
+for fixture_name in MATRIX['fixtures']:
+    fixture_dir = ROOT / 'fixtures' / fixture_name
+    expected_dir = fixture_dir / 'expected' / MODEL_VERSION / REASONING_PACK
+    thought_expected = expected_dir / 'thought_artifact.json'
+    verdict_expected = expected_dir / 'reasoning_verdict.json'
+    if not thought_expected.exists() or not verdict_expected.exists():
+        print(f'Missing expected outputs for {fixture_name} ({MODEL_VERSION}/{REASONING_PACK}).', file=sys.stderr)
+        status = 1
+        continue
+    with tempfile.TemporaryDirectory() as td:
+        out = Path(td) / 'out'
+        cmd, cwd = engine_cmd(fixture_dir / 'problem.json', out)
+        try:
+            subprocess.run(cmd, cwd=cwd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        except FileNotFoundError as exc:
+            print(f'Unable to locate engine command: {exc}', file=sys.stderr)
+            sys.exit(1)
+        except subprocess.CalledProcessError as exc:
+            print(exc.stdout, end='')
+            print(exc.stderr, end='', file=sys.stderr)
+            status = 1
+            continue
+        actual_thought = json.loads((out / 'thought_artifact.json').read_text())
+        actual_verdict = json.loads((out / 'reasoning_verdict.json').read_text())
+        expected_thought = json.loads(thought_expected.read_text())
+        expected_verdict = json.loads(verdict_expected.read_text())
+        if stable(actual_thought) != stable(expected_thought):
+            print(f'Thought artifact mismatch: {fixture_name}', file=sys.stderr)
+            status = 1
+        if stable(actual_verdict) != stable(expected_verdict):
+            print(f'Reasoning verdict mismatch: {fixture_name}', file=sys.stderr)
+            status = 1
+sys.exit(status)

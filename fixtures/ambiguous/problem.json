@@ -1,9 +1,12 @@
 {
-  "fixture_id": "ambiguous-001",
-  "category": "ambiguity",
-  "prompt": "Book me a table at the restaurant tomorrow evening.",
-  "constraints": [
-    "No restaurant or time is specified."
-  ],
-  "notes": "Ambiguous intent should trigger a clarification request."
+  "user_input": "idk",
+  "session": {
+    "history": [],
+    "last_user_utterances": [],
+    "last_intent": null,
+    "extracted_intent": null,
+    "extracted_constraints": [],
+    "stopped": false,
+    "frozen": false
+  }
 }

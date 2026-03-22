@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CogA export-ready record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["problem", "thought_artifact", "reasoning_verdict", "metadata"],
+  "properties": {
+    "problem": {"$ref": "fixture.schema.json"},
+    "thought_artifact": {"$ref": "thought_artifact.schema.json"},
+    "reasoning_verdict": {"$ref": "reasoning_verdict.schema.json"},
+    "metadata": {"$ref": "fixture_metadata.schema.json"}
+  }
+}

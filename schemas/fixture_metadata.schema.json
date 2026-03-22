@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CogA dataset fixture metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "fixture_id",
+    "model_version",
+    "contract_version",
+    "reasoning_pack_id",
+    "reasoning_pack_version",
+    "profile_id",
+    "profile_version",
+    "device",
+    "scenario_type",
+    "expected_outcome"
+  ],
+  "properties": {
+    "fixture_id": {"type": "string"},
+    "model_version": {"type": "string"},
+    "contract_version": {"type": "string"},
+    "reasoning_pack_id": {"type": "string"},
+    "reasoning_pack_version": {"type": "string"},
+    "profile_id": {"type": ["string", "null"]},
+    "profile_version": {"type": ["string", "null"]},
+    "device": {"type": ["string", "null"]},
+    "scenario_type": {
+      "type": "string",
+      "enum": [
+        "ambiguous",
+        "assumptions",
+        "bounded_options",
+        "comparison",
+        "contradiction",
+        "non_directive_regression",
+        "options",
+        "stop_freeze",
+        "tie_breaker",
+        "unclear_min_delta"
+      ]
+    },
+    "expected_outcome": {"type": "string", "enum": ["COMPLETE", "UNCLEAR", "REFUSE"]}
+  }
+}
