@@ -6,7 +6,7 @@ Deterministic drift-detection fixtures for the real `Outer-Void/blux-coga` engin
 
 - Canonical engine repo: `Outer-Void/blux-coga`
 - Engine repo default branch: `main`
-- Verified upstream commit for this finalization pass: `58da195ac1375fe2f4c584cfccb1607fd8917a44`
+- Verified upstream commit for this finalization pass: `10b5b8e32f59f07f93a85d647d6f326acb7c1bc2`
 - Canonical package name: `blux-coga`
 - Canonical package version: `1.0.0`
 - Canonical model version line: `CogA-1.0-pro`
@@ -18,7 +18,7 @@ The version naming convention is the exact engine convention from `run_header.mo
 
 ## Fixture structure
 
-Each fixture directory deterministically maps to four export records:
+Each fixture directory deterministically maps to one export record composed of four artifacts:
 
 ```text
 fixtures/<fixture_name>/
@@ -67,7 +67,7 @@ Preferred invocation uses the engine repo's canonical CLI:
 BLUX_COGA_REPO=../blux-coga ./scripts/run_harness.sh
 ```
 
-The harness now prefers `blux-coga run --input ... --output-dir ...`, using either the repo-local `.venv` script, `python -m blux_coga`, or an installed `blux-coga` executable. Compatibility aliases like `./CogA.sh --in ... --out ...` belong to the engine repo, but the dataset harness freezes on the canonical `run` subcommand path.
+The harness now prefers `blux-coga run --input ... --output-dir ...`, using either the repo-local `.venv` script, the repo source checkout via `PYTHONPATH=<repo>/src`, `python -m blux_coga`, or an installed `blux-coga` executable. Compatibility aliases like `./CogA.sh --in ... --out ...` belong to the engine repo, but the dataset harness freezes on the canonical `run` subcommand path.
 
 ### Deterministic JSONL export
 
@@ -75,7 +75,7 @@ The harness now prefers `blux-coga run --input ... --output-dir ...`, using eith
 python ./scripts/export_fixtures.py --output dist/blux-coga-dataset.jsonl
 ```
 
-The exporter emits one compact JSON object per line with stable key ordering and stable fixture ordering. Each line contains:
+The exporter emits one compact JSON object per line with stable key ordering, LF newlines, UTF-8 encoding, and stable fixture ordering taken from `fixtures/fixture_matrix.json`. Each line contains:
 
 - `problem`
 - `thought_artifact`

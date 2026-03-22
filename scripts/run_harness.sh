@@ -17,6 +17,13 @@ def stable(data):
     return json.dumps(data, sort_keys=True, separators=(',', ':'))
 
 
+def _with_pythonpath(env: dict[str, str], extra_path: Path) -> dict[str, str]:
+    updated = dict(env)
+    current = updated.get('PYTHONPATH')
+    updated['PYTHONPATH'] = str(extra_path) if not current else os.pathsep.join([str(extra_path), current])
+    return updated
+
+
 def resolve_engine_entrypoint():
     repo = os.environ.get('BLUX_COGA_REPO')
     if not repo:
@@ -25,21 +32,28 @@ def resolve_engine_entrypoint():
             repo = str(sibling)
     if repo:
         repo_path = Path(repo)
-        venv_bin = repo_path / '.venv' / 'bin' / 'blux-coga'
-        if venv_bin.exists():
-            return [str(venv_bin)], str(repo_path), 'repo .venv script'
-        venv_python = repo_path / '.venv' / 'bin' / 'python'
-        if venv_python.exists():
-            return [str(venv_python), '-m', 'blux_coga'], str(repo_path), 'repo .venv module'
-        return [sys.executable, '-m', 'blux_coga'], str(repo_path), 'current python module in repo'
+        if not repo_path.exists():
+            print(f'Ignoring BLUX_COGA_REPO={repo_path}: path does not exist.', file=sys.stderr)
+        else:
+            src_path = repo_path / 'src'
+            venv_bin = repo_path / '.venv' / 'bin' / 'blux-coga'
+            if venv_bin.exists():
+                return [str(venv_bin)], str(repo_path), dict(os.environ), 'repo .venv script'
+            venv_python = repo_path / '.venv' / 'bin' / 'python'
+            if venv_python.exists():
+                env = _with_pythonpath(dict(os.environ), src_path) if src_path.exists() else dict(os.environ)
+                return [str(venv_python), '-m', 'blux_coga'], str(repo_path), env, 'repo .venv module'
+            if src_path.exists():
+                return [sys.executable, '-m', 'blux_coga'], str(repo_path), _with_pythonpath(dict(os.environ), src_path), 'repo source checkout via PYTHONPATH'
+            return [sys.executable, '-m', 'blux_coga'], str(repo_path), dict(os.environ), 'current python module in repo'
     binary = os.environ.get('BLUX_COGA_BIN') or shutil.which('blux-coga')
     if binary:
-        return [binary], str(ROOT), 'installed blux-coga script'
-    return [sys.executable, '-m', 'blux_coga'], str(ROOT), 'current python module'
+        return [binary], str(ROOT), dict(os.environ), 'installed blux-coga script'
+    return [sys.executable, '-m', 'blux_coga'], str(ROOT), dict(os.environ), 'current python module'
 
 
 def build_engine_cmd(problem_path: Path, output_dir: Path):
-    base_cmd, cwd, descriptor = resolve_engine_entrypoint()
+    base_cmd, cwd, env, descriptor = resolve_engine_entrypoint()
     cmd = [*base_cmd, 'run', '--input', str(problem_path), '--output-dir', str(output_dir)]
     profile = os.environ.get('PROFILE_ID')
     profile_file = os.environ.get('PROFILE_FILE')
@@ -47,11 +61,11 @@ def build_engine_cmd(problem_path: Path, output_dir: Path):
         cmd += ['--profile', profile]
     if profile_file:
         cmd += ['--profile-file', profile_file]
-    return cmd, cwd, descriptor
+    return cmd, cwd, env, descriptor
 
 
 status = 0
-engine_cmd, engine_cwd, engine_descriptor = build_engine_cmd(ROOT / 'fixtures' / MATRIX['fixtures'][0] / 'problem.json', Path('/tmp/placeholder'))
+engine_cmd, engine_cwd, engine_env, engine_descriptor = build_engine_cmd(ROOT / 'fixtures' / MATRIX['fixtures'][0] / 'problem.json', Path('/tmp/placeholder'))
 print(f'Using engine entrypoint: {engine_descriptor}', file=sys.stderr)
 print('Command template: ' + ' '.join(engine_cmd[:-2] + ['<OUTPUT_DIR>']), file=sys.stderr)
 for fixture_name in MATRIX['fixtures']:
@@ -65,9 +79,9 @@ for fixture_name in MATRIX['fixtures']:
         continue
     with tempfile.TemporaryDirectory() as td:
         out = Path(td) / 'out'
-        cmd, cwd, _ = build_engine_cmd(fixture_dir / 'problem.json', out)
+        cmd, cwd, env, _ = build_engine_cmd(fixture_dir / 'problem.json', out)
         try:
-            subprocess.run(cmd, cwd=cwd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            subprocess.run(cmd, cwd=cwd, env=env, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         except FileNotFoundError as exc:
             print(f'Unable to locate engine command: {exc}', file=sys.stderr)
             sys.exit(1)

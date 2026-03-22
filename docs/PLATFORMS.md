@@ -5,6 +5,7 @@
 - Use `python -m pip`, never raw `pip`.
 - The dataset harness expects the real `blux-coga` engine's canonical file-based invocation: `blux-coga run --input ... --output-dir ...`.
 - Prefer running against a local checkout via `BLUX_COGA_REPO=/path/to/blux-coga ./scripts/run_harness.sh`.
+- If `BLUX_COGA_REPO` points at a source checkout, the harness automatically adds `<repo>/src` to `PYTHONPATH` so you do not need an editable install just to verify fixtures.
 
 ## Linux / macOS
 

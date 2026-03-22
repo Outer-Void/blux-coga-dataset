@@ -8,7 +8,7 @@ This repository detects drift in `blux-coga`; it does **not** define or legislat
 
 - Engine repo: `Outer-Void/blux-coga`
 - Engine branch: `main`
-- Verified engine commit for this dataset pass: `58da195ac1375fe2f4c584cfccb1607fd8917a44`
+- Verified engine commit for this dataset pass: `10b5b8e32f59f07f93a85d647d6f326acb7c1bc2`
 - Package release: `blux-coga` `1.0.0`
 - Engine line: `CogA-1.0-pro`
 - Contract version: `1.0`
@@ -34,11 +34,13 @@ Lowercase `coga-*` paths and mixed naming are stale and should not be reintroduc
 6. Run `python ./scripts/export_fixtures.py --output dist/blux-coga-dataset.jsonl`.
 7. Update docs and schemas in the same change if fixture structure or expectations changed.
 
+When `BLUX_COGA_REPO` points at a source checkout, the dataset harness treats `<repo>/src` as the canonical import root and still invokes the engine through `blux-coga run --input ... --output-dir ...`. This removes reliance on older undocumented wrapper assumptions.
+
 ## Determinism requirements
 
 - Expected artifacts must be direct engine outputs.
 - Compatibility history may be documented, but only runnable current-engine outputs should be required by the harness.
-- The repo should remain export-friendly: one fixture maps deterministically to `problem`, `thought_artifact`, `reasoning_verdict`, and `metadata`.
+- The repo should remain export-friendly: one fixture maps deterministically to a single export row containing `problem`, `thought_artifact`, `reasoning_verdict`, and `metadata`.
 - Deterministic export means compact JSONL with stable fixture order, stable key order, and byte-identical re-runs.
 
 ## Drift discipline

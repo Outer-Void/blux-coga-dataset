@@ -25,20 +25,23 @@ def build_record(fixture_name):
     }
 
 
+def canonical_fixture_order():
+    fixture_names = list(MATRIX['fixtures'])
+    if len(fixture_names) != len(set(fixture_names)):
+        raise SystemExit('fixture_matrix.json contains duplicate fixture names.')
+    return fixture_names
+
+
 def main():
     parser = argparse.ArgumentParser(description='Export fixtures as deterministic JSONL.')
     parser.add_argument('--output', type=Path, help='Write JSONL to this file instead of stdout.')
     args = parser.parse_args()
 
-    fixture_names = list(MATRIX['fixtures'])
-    if len(fixture_names) != len(set(fixture_names)):
-        raise SystemExit('fixture_matrix.json contains duplicate fixture names.')
-
-    lines = [stable_json(build_record(fixture_name)) for fixture_name in fixture_names]
+    lines = [stable_json(build_record(fixture_name)) for fixture_name in canonical_fixture_order()]
     payload = ''.join(line + '\n' for line in lines)
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(payload)
+        args.output.write_text(payload, encoding='utf-8', newline='\n')
     else:
         sys.stdout.write(payload)
 
