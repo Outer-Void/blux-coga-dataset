@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Expected CogA reasoning verdict",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["run_header", "status", "checks", "delta"],
+  "properties": {
+    "run_header": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_hash",
+        "contract_version",
+        "model_version",
+        "reasoning_pack_id",
+        "reasoning_pack_version",
+        "schema_version"
+      ],
+      "properties": {
+        "input_hash": {"type": "string"},
+        "contract_version": {"type": "string"},
+        "model_version": {"type": "string"},
+        "reasoning_pack_id": {"type": "string"},
+        "reasoning_pack_version": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "profile_id": {"type": "string"},
+        "profile_version": {"type": "string"}
+      }
+    },
+    "status": {"type": "string", "enum": ["COMPLETE", "UNCLEAR", "REFUSE"]},
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "message"],
+        "properties": {
+          "id": {"type": "string"},
+          "status": {"type": "string", "enum": ["PASS", "FAIL", "FLAG"]},
+          "message": {"type": "string"}
+        }
+      }
+    },
+    "delta": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["minimal_change"],
+      "properties": {
+        "minimal_change": {"type": "string"}
+      }
+    },
+    "refusal": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["category", "detail"],
+      "properties": {
+        "category": {"type": "string"},
+        "detail": {"type": "string"}
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"status": {"enum": ["UNCLEAR"]}}},
+      "then": {"properties": {"delta": {"type": "object"}}}
+    },
+    {
+      "if": {"properties": {"status": {"enum": ["REFUSE"]}}},
+      "then": {"properties": {"refusal": {"type": "object"}}}
+    }
+  ]
+}

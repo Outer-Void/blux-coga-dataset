@@ -1,0 +1,12 @@
+{
+  "fixture_id": "tie-breaker-001",
+  "model_version": "CogA-1.0-pro",
+  "contract_version": "1.0",
+  "reasoning_pack_id": "default",
+  "reasoning_pack_version": "1.0",
+  "profile_id": null,
+  "profile_version": null,
+  "device": null,
+  "scenario_type": "tie_breaker",
+  "expected_outcome": "COMPLETE"
+}

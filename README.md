@@ -1,79 +1,89 @@
 # blux-coga-dataset
 
-Deterministic fixtures and regression cases for blux-coga live here.
-These datasets do not define reasoning behavior; they detect drift over time.
-Fixtures should only be updated on deliberate model/version changes.
+Deterministic drift-detection fixtures for the real `Outer-Void/blux-coga` engine live here. This repo does **not** define reasoning behavior; it records real engine outputs so later runs can detect drift against the engine's current contract and boundary behavior.
 
-**Dataset Tag:** CogA V1.0 Dataset
+## Engine line mapped by this dataset
 
-## Phase 0 (Hygiene Lock)
-- No dataset fixtures are included yet.
-- No fixture automation is enabled in Phase 0.
+- Canonical engine repo: `Outer-Void/blux-coga`
+- Canonical model version line: `CogA-1.0-pro`
+- Contract version: `1.0`
+- Schema version: `1.0`
+- Reasoning pack coverage in this repo: `default`
 
-## Phase 1 (Dataset Charter + Fixture Schema Baseline)
-- Schemas live in `schemas/` and define the fixture contract.
-- Minimal fixtures live in `fixtures/`, organized by scenario.
+The version naming convention is the exact engine convention from `run_header.model_version`: `CogA-<major>.<minor>` and `CogA-<major>.<minor>-pro`. This dataset now uses the engine-correct capitalized `CogA-*` names everywhere.
 
-## Phase 3 (Multi-option Fixtures)
-- Multi-option reasoning fixtures live in `fixtures/options_basic`,
-  `fixtures/comparison_basic`, and `fixtures/non_directive_regression`.
-- These fixtures enforce non-directive behavior when multiple options are present.
+## Fixture structure
 
-## Phase 4 (Acceptance Harness Integration)
-- Selected fixtures include a `report.json` acceptance artifact for harness checks.
-- The harness compares `report.json` output when present to lock Phase 4 behavior.
+Each fixture directory is export-ready and maps deterministically to four records:
 
-## Phase 5 (Reasoning Pack Coverage)
-- Expected outputs live under `fixtures/<case>/expected/<model_version>/<reasoning_pack>/`.
-- Packs in scope: `default`, `strict-mini`.
+```text
+fixtures/<fixture_name>/
+  problem.json
+  metadata.json
+  expected/CogA-1.0-pro/default/
+    thought_artifact.json
+    reasoning_verdict.json
+```
 
-## Phase 6 (Bounded Depth + UNCLEAR Determinism)
-- Fixtures cover bounded option enumeration, deterministic tie-breaking, and minimal-delta choices.
+- `problem.json` is a real engine `ProblemSpec`, not a dataset-only prompt wrapper.
+- `metadata.json` carries export metadata such as `fixture_id`, `scenario_type`, `model_version`, `contract_version`, `reasoning_pack_id`, `reasoning_pack_version`, `profile_id`, `profile_version`, `device`, and `expected_outcome`.
+- Expected artifacts are raw engine-shaped `thought_artifact.json` and `reasoning_verdict.json` files.
 
-## Phase 7 (Compatibility Coverage)
-- Archived outputs for CogA-0.4 through CogA-1.0-pro are stored under the same expected path.
+## Fixture families
 
-## Phase 8 (CI Gating + Fixture Law)
-- Use `scripts/verify_fixtures.sh` to ensure all matrix entries exist.
-- Use the harness to detect drift; CI should run both.
+Current fixture coverage includes:
 
-## Phase 9 (Release Candidate Dataset Freeze)
-- Fixture schema and directory conventions are locked in `fixtures/fixture_matrix.json`.
-- Platform guidance lives in `docs/PLATFORMS.md`.
+- `ambiguous`
+- `assumptions`
+- `bounded_options`
+- `comparison`
+- `contradiction`
+- `non_directive_regression`
+- `options`
+- `stop_freeze`
+- `tie_breaker`
+- `unclear_min_delta`
 
-## Phase 10 (CogA V1.0 Dataset Lock)
-- Dataset coverage includes ambiguity, contradiction, assumptions, multi-option comparison,
-  non-directive compliance, and refusal cases.
+Legacy model names `CogA-0.4` through `CogA-1.0` remain documented in `fixtures/fixture_matrix.json` as compatibility history only. They are **not** treated as runnable current-engine targets by the harness, because the current local engine emits `CogA-1.0-pro`.
 
-## Harness (optional minimal)
-Run the tiny harness script after wiring CogA output to the expected schema:
+## Harness and verification
+
+### Verify fixture completeness and schemas
 
 ```sh
-COGA_CMD=coga ./scripts/run_harness.sh
+./scripts/verify_fixtures.sh
 ```
 
-The harness expects the `coga` command to accept `--problem`, `--output-thought`,
-`--output-verdict`, and optionally `--output-report` flags, writing JSON that
-matches the schemas in `schemas/` plus `report.json` when present. Replace
-`COGA_CMD` with a wrapper if your invocation differs.
+### Re-run the dataset against the real engine
 
-Override the default model version or reasoning pack with:
+Preferred invocation uses the engine repo's canonical file-based runner:
 
 ```sh
-MODEL_VERSION=coga-1.0 REASONING_PACK=default COGA_CMD=coga ./scripts/run_harness.sh
+BLUX_COGA_REPO=../blux-coga ./scripts/run_harness.sh
 ```
 
-Profile-specific fixtures can declare `required_profile_id` (and optional
-`required_profile_version`) in `problem.json`. When present, expected outputs
-may live under:
+If `../blux-coga` exists, the harness auto-detects it and uses `./CogA.sh --in ... --out ...`. Otherwise it falls back to an installed `blux-coga` binary.
 
-```
-fixtures/<case>/expected/<model_version>/<profile_id>/<reasoning_pack>/
-```
-
-Run the harness with profile context by setting `PROFILE_ID` (and optionally
-`PROFILE_VERSION`):
+### Export-ready JSON assembly
 
 ```sh
-PROFILE_ID=pro PROFILE_VERSION=2024-09 MODEL_VERSION=coga-1.0 REASONING_PACK=default COGA_CMD=coga ./scripts/run_harness.sh
+python ./scripts/export_fixtures.py
 ```
+
+That script prints an array of records shaped as:
+
+- `problem`
+- `thought_artifact`
+- `reasoning_verdict`
+- `metadata`
+
+which is the deterministic internal structure intended for later JSONL export and HuggingFace publication.
+
+## Truth constraints for fixture updates
+
+- Update fixtures only by rerunning the real engine.
+- If engine behavior changes, refresh `problem.json`, `metadata.json`, expected artifacts, schemas, and docs together when needed.
+- Do not introduce harness-only flags that the real engine does not support.
+- Do not store duplicate version directories unless they correspond to real archived engine outputs.
+
+See `docs/POLICY.md` and `docs/PLATFORMS.md` for the operational policy and platform setup notes.

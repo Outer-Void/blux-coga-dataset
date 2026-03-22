@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Expected CogA thought artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_header",
+    "reflection",
+    "clarifications",
+    "observations",
+    "flags",
+    "contradiction",
+    "options",
+    "comparison",
+    "acknowledgment",
+    "summary",
+    "response_text"
+  ],
+  "properties": {
+    "run_header": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_hash",
+        "contract_version",
+        "model_version",
+        "reasoning_pack_id",
+        "reasoning_pack_version",
+        "schema_version"
+      ],
+      "properties": {
+        "input_hash": {"type": "string"},
+        "contract_version": {"type": "string"},
+        "model_version": {"type": "string"},
+        "reasoning_pack_id": {"type": "string"},
+        "reasoning_pack_version": {"type": "string"},
+        "schema_version": {"type": "string"},
+        "profile_id": {"type": "string"},
+        "profile_version": {"type": "string"}
+      }
+    },
+    "reflection": {"type": "string"},
+    "clarifications": {"type": "array", "items": {"type": "string"}},
+    "observations": {"type": "array", "items": {"type": "string"}},
+    "flags": {"type": "object", "additionalProperties": {"type": "boolean"}},
+    "contradiction": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["earlier", "later"],
+      "properties": {
+        "earlier": {"type": "string"},
+        "later": {"type": "string"}
+      }
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "pros", "cons", "risks", "unknowns"],
+        "properties": {
+          "id": {"type": "string"},
+          "title": {"type": "string"},
+          "pros": {"type": "array", "items": {"type": "string"}},
+          "cons": {"type": "array", "items": {"type": "string"}},
+          "risks": {"type": "array", "items": {"type": "string"}},
+          "unknowns": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "comparison": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["criteria", "rows"],
+      "properties": {
+        "criteria": {"type": "array", "items": {"type": "string"}},
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["option_id", "values"],
+            "properties": {
+              "option_id": {"type": "string"},
+              "values": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    },
+    "acknowledgment": {"type": ["string", "null"]},
+    "summary": {"type": ["string", "null"]},
+    "response_text": {"type": "string"}
+  }
+}

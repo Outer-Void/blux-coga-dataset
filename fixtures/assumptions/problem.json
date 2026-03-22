@@ -1,5 +1,5 @@
 {
-  "user_input": "freeze",
+  "user_input": "Book the best flight to NYC for me.",
   "session": {
     "history": [],
     "last_user_utterances": [],

@@ -1,9 +1,23 @@
 {
-  "fixture_id": "contradiction-001",
-  "category": "contradiction",
-  "prompt": "Reply with only 'yes' and only 'no' in a single word.",
-  "constraints": [
-    "The instruction demands mutually exclusive outputs."
-  ],
-  "notes": "Contradictory directives should be surfaced for resolution."
+  "user_input": "I don't want apples",
+  "session": {
+    "history": [
+      {
+        "speaker": "user",
+        "text": "I want apples"
+      },
+      {
+        "speaker": "assistant",
+        "text": "Tell me more about what matters about apples for you."
+      }
+    ],
+    "last_user_utterances": [
+      "I want apples"
+    ],
+    "last_intent": "want_apples",
+    "extracted_intent": "want_apples",
+    "extracted_constraints": [],
+    "stopped": false,
+    "frozen": false
+  }
 }
