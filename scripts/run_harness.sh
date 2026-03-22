@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,33 +17,43 @@ def stable(data):
     return json.dumps(data, sort_keys=True, separators=(',', ':'))
 
 
-def engine_cmd(problem_path: Path, output_dir: Path):
+def resolve_engine_entrypoint():
     repo = os.environ.get('BLUX_COGA_REPO')
     if not repo:
         sibling = ROOT.parent / 'blux-coga'
         if sibling.exists():
             repo = str(sibling)
-    profile = os.environ.get('PROFILE_ID')
-    profile_file = os.environ.get('PROFILE_FILE')
     if repo:
         repo_path = Path(repo)
+        venv_bin = repo_path / '.venv' / 'bin' / 'blux-coga'
+        if venv_bin.exists():
+            return [str(venv_bin)], str(repo_path), 'repo .venv script'
         venv_python = repo_path / '.venv' / 'bin' / 'python'
         if venv_python.exists():
-            cmd = [str(venv_python), '-m', 'blux_coga', '--input', str(problem_path), '--output-dir', str(output_dir)]
-        else:
-            cmd = [str(repo_path / 'CogA.sh'), '--in', str(problem_path), '--out', str(output_dir)]
-        cwd = repo
-    else:
-        binary = os.environ.get('BLUX_COGA_BIN', 'blux-coga')
-        cmd = [binary, '--input', str(problem_path), '--output-dir', str(output_dir)]
-        cwd = str(ROOT)
+            return [str(venv_python), '-m', 'blux_coga'], str(repo_path), 'repo .venv module'
+        return [sys.executable, '-m', 'blux_coga'], str(repo_path), 'current python module in repo'
+    binary = os.environ.get('BLUX_COGA_BIN') or shutil.which('blux-coga')
+    if binary:
+        return [binary], str(ROOT), 'installed blux-coga script'
+    return [sys.executable, '-m', 'blux_coga'], str(ROOT), 'current python module'
+
+
+def build_engine_cmd(problem_path: Path, output_dir: Path):
+    base_cmd, cwd, descriptor = resolve_engine_entrypoint()
+    cmd = [*base_cmd, 'run', '--input', str(problem_path), '--output-dir', str(output_dir)]
+    profile = os.environ.get('PROFILE_ID')
+    profile_file = os.environ.get('PROFILE_FILE')
     if profile:
         cmd += ['--profile', profile]
     if profile_file:
         cmd += ['--profile-file', profile_file]
-    return cmd, cwd
+    return cmd, cwd, descriptor
+
 
 status = 0
+engine_cmd, engine_cwd, engine_descriptor = build_engine_cmd(ROOT / 'fixtures' / MATRIX['fixtures'][0] / 'problem.json', Path('/tmp/placeholder'))
+print(f'Using engine entrypoint: {engine_descriptor}', file=sys.stderr)
+print('Command template: ' + ' '.join(engine_cmd[:-2] + ['<OUTPUT_DIR>']), file=sys.stderr)
 for fixture_name in MATRIX['fixtures']:
     fixture_dir = ROOT / 'fixtures' / fixture_name
     expected_dir = fixture_dir / 'expected' / MODEL_VERSION / REASONING_PACK
@@ -54,15 +65,17 @@ for fixture_name in MATRIX['fixtures']:
         continue
     with tempfile.TemporaryDirectory() as td:
         out = Path(td) / 'out'
-        cmd, cwd = engine_cmd(fixture_dir / 'problem.json', out)
+        cmd, cwd, _ = build_engine_cmd(fixture_dir / 'problem.json', out)
         try:
             subprocess.run(cmd, cwd=cwd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         except FileNotFoundError as exc:
             print(f'Unable to locate engine command: {exc}', file=sys.stderr)
             sys.exit(1)
         except subprocess.CalledProcessError as exc:
-            print(exc.stdout, end='')
-            print(exc.stderr, end='', file=sys.stderr)
+            if exc.stdout:
+                print(exc.stdout, end='')
+            if exc.stderr:
+                print(exc.stderr, end='', file=sys.stderr)
             status = 1
             continue
         actual_thought = json.loads((out / 'thought_artifact.json').read_text())

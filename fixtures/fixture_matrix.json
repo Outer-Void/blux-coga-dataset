@@ -3,8 +3,18 @@
   "canonical_model_version": "CogA-1.0-pro",
   "contract_version": "1.0",
   "schema_version": "1.0",
-  "reasoning_packs": ["default"],
-  "legacy_model_versions": ["CogA-0.4", "CogA-0.5", "CogA-0.6", "CogA-0.7", "CogA-0.8", "CogA-0.9", "CogA-1.0"],
+  "reasoning_packs": [
+    "default"
+  ],
+  "legacy_model_versions": [
+    "CogA-0.4",
+    "CogA-0.5",
+    "CogA-0.6",
+    "CogA-0.7",
+    "CogA-0.8",
+    "CogA-0.9",
+    "CogA-1.0"
+  ],
   "fixtures": [
     "ambiguous",
     "assumptions",
@@ -16,5 +26,9 @@
     "stop_freeze",
     "tie_breaker",
     "unclear_min_delta"
-  ]
+  ],
+  "engine_package_name": "blux-coga",
+  "engine_package_version": "1.0.0",
+  "engine_repo_default_branch": "main",
+  "engine_repo_commit": "58da195ac1375fe2f4c584cfccb1607fd8917a44"
 }
