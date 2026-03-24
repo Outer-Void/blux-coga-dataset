@@ -10,6 +10,7 @@
       "additionalProperties": false,
       "required": [
         "input_hash",
+        "run_hash",
         "contract_version",
         "model_version",
         "reasoning_pack_id",
@@ -18,6 +19,7 @@
       ],
       "properties": {
         "input_hash": {"type": "string"},
+        "run_hash": {"type": "string"},
         "contract_version": {"type": "string"},
         "model_version": {"type": "string"},
         "reasoning_pack_id": {"type": "string"},
