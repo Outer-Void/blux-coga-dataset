@@ -1,3 +1,15 @@
+---
+pretty_name: BLUX CogA Dataset
+license: other
+license_name: BLUX Proprietary License
+tags:
+  - reasoning
+  - deterministic-ai
+  - evaluation
+task_categories:
+  - text-generation
+---
+
 # blux-coga-dataset
 
 Deterministic drift-detection fixtures for the real `Outer-Void/blux-coga` engine live here. This repo does **not** define reasoning behavior; it records real engine outputs so later runs can detect drift against the engine's current contract and boundary behavior.
@@ -10,6 +22,7 @@ Deterministic drift-detection fixtures for the real `Outer-Void/blux-coga` engin
 - Canonical package name: `blux-coga`
 - Canonical package version: `1.0.0`
 - Canonical model version line: `CogA-1.0-pro`
+- Dataset-to-engine mapping lock: `blux-coga-dataset v1.0 -> CogA-1.0-pro`
 - Contract version: `1.0`
 - Schema version: `1.0`
 - Export contract version: `1.0`
@@ -75,7 +88,7 @@ The harness now prefers `blux-coga run --input ... --output-dir ...`, using eith
 ### Deterministic JSONL export
 
 ```sh
-python ./scripts/export_fixtures.py --output dist/blux-coga-dataset.jsonl
+python ./scripts/export_fixtures.py
 ```
 
 The exporter emits one compact JSON object per line with stable key ordering, LF newlines, UTF-8 encoding, and stable fixture ordering taken from `fixtures/fixture_matrix.json`. Each line contains:
@@ -89,8 +102,17 @@ Re-running the exporter with unchanged fixtures should produce byte-identical JS
 
 Canonical export artifact path for publication handoff:
 
-- `dist/blux-coga-dataset.jsonl`
+- `exports/blux-coga-dataset.jsonl`
 - optional determinism check: export twice and compare SHA-256 digests
+
+Determinism check command sequence:
+
+```sh
+python ./scripts/export_fixtures.py
+sha256sum exports/blux-coga-dataset.jsonl
+python ./scripts/export_fixtures.py
+sha256sum exports/blux-coga-dataset.jsonl
+```
 
 ## Truth constraints for fixture updates
 
@@ -109,3 +131,10 @@ See `docs/POLICY.md` and `docs/PLATFORMS.md` for the operational policy and plat
 - **Row structure:** each JSONL row contains `problem`, `thought_artifact`, `reasoning_verdict`, and `metadata`.
 - **License/proprietary note:** see `LICENSE`; this repository content is proprietary release material and is not a normative reasoning specification.
 - **Provenance:** generated from local file-based runs of the real engine via `blux-coga run --input ... --output-dir ...`, then frozen as deterministic fixtures and deterministic JSONL export.
+- **Reasoning structure:** each row keeps the engine-native separation of `thought_artifact` and `reasoning_verdict`, plus raw `problem` and run metadata for replay/audit.
+- **Non-directive guarantee:** fixtures are generated from real engine behavior and validated by `non_directive_regression` and related scenarios; the dataset does not prescribe reasoning policy beyond captured engine outcomes.
+- **Generation process:** run fixture/schema verification, run live harness against `blux-coga`, export deterministic canonical JSONL, then verify byte-identical repeat export.
+
+## Script semantics
+
+All operational scripts in `scripts/` are Python executables (`.py`) and are invoked with `python ./scripts/<name>.py`. There are no shell-script entrypoints in this dataset repository.

@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MATRIX = json.loads((ROOT / 'fixtures' / 'fixture_matrix.json').read_text())
 MODEL = MATRIX['canonical_model_version']
 PACK = MATRIX['reasoning_packs'][0]
+CANONICAL_EXPORT = ROOT / 'exports' / 'blux-coga-dataset.jsonl'
 
 
 def stable_json(data):
@@ -34,16 +35,26 @@ def canonical_fixture_order():
 
 def main():
     parser = argparse.ArgumentParser(description='Export fixtures as deterministic JSONL.')
-    parser.add_argument('--output', type=Path, help='Write JSONL to this file instead of stdout.')
+    parser.add_argument(
+        '--output',
+        type=Path,
+        default=CANONICAL_EXPORT,
+        help=f'Canonical export path (must be {CANONICAL_EXPORT.relative_to(ROOT)}).',
+    )
     args = parser.parse_args()
+    output_path = args.output.resolve()
+    canonical_path = CANONICAL_EXPORT.resolve()
+    if output_path != canonical_path:
+        raise SystemExit(
+            f'Non-canonical export path blocked: {args.output}. '
+            f'Use {CANONICAL_EXPORT.relative_to(ROOT)}.'
+        )
 
     lines = [stable_json(build_record(fixture_name)) for fixture_name in canonical_fixture_order()]
     payload = ''.join(line + '\n' for line in lines)
-    if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(payload, encoding='utf-8', newline='\n')
-    else:
-        sys.stdout.write(payload)
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(payload, encoding='utf-8', newline='\n')
+    sys.stdout.write(f'Wrote {args.output.relative_to(ROOT)}\n')
 
 
 if __name__ == '__main__':
