@@ -3,6 +3,7 @@
   "canonical_model_version": "CogA-1.0-pro",
   "contract_version": "1.0",
   "schema_version": "1.0",
+  "export_contract_version": "1.0",
   "reasoning_packs": [
     "default"
   ],
