@@ -12,6 +12,7 @@ Deterministic drift-detection fixtures for the real `Outer-Void/blux-coga` engin
 - Canonical model version line: `CogA-1.0-pro`
 - Contract version: `1.0`
 - Schema version: `1.0`
+- Export contract version: `1.0`
 - Reasoning pack coverage in this repo: `default@1.0`
 
 The version naming convention is the exact engine convention from `run_header.model_version`: `CogA-<major>.<minor>` and `CogA-<major>.<minor>-pro`. This dataset freezes on the engine-correct capitalized `CogA-*` names everywhere and treats older names only as compatibility history.
@@ -53,18 +54,20 @@ Legacy model names `CogA-0.4` through `CogA-1.0` remain documented in `fixtures/
 
 ## Harness and verification
 
-### Verify fixture completeness, metadata coherence, and schemas
+### Canonical verification workflow (single source of truth)
+
+1) Validate fixture files and schemas:
 
 ```sh
-./scripts/verify_fixtures.sh
+python ./scripts/verify_fixtures.py
 ```
 
-### Re-run the dataset against the real engine
+2) Re-run fixtures against the real local `blux-coga` engine:
 
 Preferred invocation uses the engine repo's canonical CLI:
 
 ```sh
-BLUX_COGA_REPO=../blux-coga ./scripts/run_harness.sh
+BLUX_COGA_REPO=/path/to/blux-coga python ./scripts/run_harness.py
 ```
 
 The harness now prefers `blux-coga run --input ... --output-dir ...`, using either the repo-local `.venv` script, the repo source checkout via `PYTHONPATH=<repo>/src`, `python -m blux_coga`, or an installed `blux-coga` executable. Compatibility aliases like `./CogA.sh --in ... --out ...` belong to the engine repo, but the dataset harness freezes on the canonical `run` subcommand path.
@@ -84,6 +87,11 @@ The exporter emits one compact JSON object per line with stable key ordering, LF
 
 Re-running the exporter with unchanged fixtures should produce byte-identical JSONL, which is the deterministic handoff format intended for later HuggingFace publication and training ingestion.
 
+Canonical export artifact path for publication handoff:
+
+- `dist/blux-coga-dataset.jsonl`
+- optional determinism check: export twice and compare SHA-256 digests
+
 ## Truth constraints for fixture updates
 
 - Update fixtures only by rerunning the real engine.
@@ -93,3 +101,11 @@ Re-running the exporter with unchanged fixtures should produce byte-identical JS
 - This repo detects drift; it never becomes the source of truth for CogA reasoning semantics.
 
 See `docs/POLICY.md` and `docs/PLATFORMS.md` for the operational policy and platform setup notes.
+
+## HuggingFace dataset card summary (publication-ready)
+
+- **What this dataset is:** deterministic fixture rows captured from real `blux-coga` engine runs for drift detection and training handoff.
+- **What it maps to:** `Outer-Void/blux-coga` `main`, commit `10b5b8e32f59f07f93a85d647d6f326acb7c1bc2`, engine line `CogA-1.0-pro`, package `blux-coga==1.0.0`.
+- **Row structure:** each JSONL row contains `problem`, `thought_artifact`, `reasoning_verdict`, and `metadata`.
+- **License/proprietary note:** see `LICENSE`; this repository content is proprietary release material and is not a normative reasoning specification.
+- **Provenance:** generated from local file-based runs of the real engine via `blux-coga run --input ... --output-dir ...`, then frozen as deterministic fixtures and deterministic JSONL export.
