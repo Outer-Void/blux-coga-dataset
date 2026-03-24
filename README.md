@@ -18,7 +18,7 @@ Deterministic drift-detection fixtures for the real `Outer-Void/blux-coga` engin
 
 - Canonical engine repo: `Outer-Void/blux-coga`
 - Engine repo default branch: `main`
-- Verified upstream commit for this finalization pass: `10b5b8e32f59f07f93a85d647d6f326acb7c1bc2`
+- Verified upstream commit for this finalization pass: `bee054ba7ce55e35fa210bf17a71aaa3e2c2d4e1`
 - Canonical package name: `blux-coga`
 - Canonical package version: `1.0.0`
 - Canonical model version line: `CogA-1.0-pro`
@@ -127,7 +127,7 @@ See `docs/POLICY.md` and `docs/PLATFORMS.md` for the operational policy and plat
 ## HuggingFace dataset card summary (publication-ready)
 
 - **What this dataset is:** deterministic fixture rows captured from real `blux-coga` engine runs for drift detection and training handoff.
-- **What it maps to:** `Outer-Void/blux-coga` `main`, commit `10b5b8e32f59f07f93a85d647d6f326acb7c1bc2`, engine line `CogA-1.0-pro`, package `blux-coga==1.0.0`.
+- **What it maps to:** `Outer-Void/blux-coga` `main`, commit `bee054ba7ce55e35fa210bf17a71aaa3e2c2d4e1`, engine line `CogA-1.0-pro`, package `blux-coga==1.0.0`.
 - **Row structure:** each JSONL row contains `problem`, `thought_artifact`, `reasoning_verdict`, and `metadata`.
 - **License/proprietary note:** see `LICENSE`; this repository content is proprietary release material and is not a normative reasoning specification.
 - **Provenance:** generated from local file-based runs of the real engine via `blux-coga run --input ... --output-dir ...`, then frozen as deterministic fixtures and deterministic JSONL export.

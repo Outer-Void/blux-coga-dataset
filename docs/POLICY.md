@@ -8,7 +8,7 @@ This repository detects drift in `blux-coga`; it does **not** define or legislat
 
 - Engine repo: `Outer-Void/blux-coga`
 - Engine branch: `main`
-- Verified engine commit for this dataset pass: `10b5b8e32f59f07f93a85d647d6f326acb7c1bc2`
+- Verified engine commit for this dataset pass: `bee054ba7ce55e35fa210bf17a71aaa3e2c2d4e1`
 - Package release: `blux-coga` `1.0.0`
 - Engine line: `CogA-1.0-pro`
 - Contract version: `1.0`
