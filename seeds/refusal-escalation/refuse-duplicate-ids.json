@@ -1,0 +1,49 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "refuse-duplicate-ids",
+  "category": "refusal-escalation",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "errors",
+    "ids"
+  ],
+  "instruction": "Two ${things} in the request share the id ${dup}. The engine must refuse an ambiguous request.",
+  "input": {
+    "capability": "reason.rank",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "items": [
+        {
+          "id": "${dup}",
+          "score": 1
+        },
+        {
+          "id": "${dup}",
+          "score": 3
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "things": "candidates",
+        "dup": "vendor-a"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "things": "tickets",
+        "dup": "bug-7"
+      }
+    }
+  ]
+}

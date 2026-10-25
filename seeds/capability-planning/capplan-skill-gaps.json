@@ -1,0 +1,69 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "capplan-skill-gaps",
+  "category": "capability-planning",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "training"
+  ],
+  "instruction": "Build ${skill} capability in the team: training, a mentored project, certification and a rota. Find the stages and the critical path.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "tasks": [
+        {
+          "id": "course",
+          "title": "${skill} course",
+          "effort": 2
+        },
+        {
+          "id": "mentored",
+          "title": "Mentored project",
+          "effort": 4,
+          "depends_on": [
+            "course"
+          ]
+        },
+        {
+          "id": "cert",
+          "title": "Certification",
+          "effort": 1,
+          "depends_on": [
+            "course"
+          ]
+        },
+        {
+          "id": "rota",
+          "title": "Join the ${skill} rota",
+          "effort": 1,
+          "depends_on": [
+            "mentored",
+            "cert"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "skill": "incident command"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "skill": "threat modelling"
+      }
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "uncertain-single-source",
+  "category": "uncertainty-handling",
+  "split": "holdout",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "sourcing"
+  ],
+  "instruction": "Everything we know about ${subject} comes from one ${source}. Critique the claim and flag that its support comes from a single source.",
+  "input": {
+    "capability": "reason.critique",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "one",
+          "claim": "${source} describing ${subject}",
+          "kind": "document",
+          "reliability": 0.6,
+          "source": {
+            "uri": "https://example.net/${slug}"
+          }
+        },
+        {
+          "id": "same",
+          "claim": "Follow-up from the same ${source}",
+          "kind": "document",
+          "reliability": 0.6,
+          "source": {
+            "uri": "https://example.net/${slug}"
+          }
+        }
+      ],
+      "claims": [
+        {
+          "id": "fact",
+          "statement": "${subject} works as described",
+          "supported_by": [
+            "one",
+            "same"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "subject": "the partner API",
+        "source": "partner newsletter",
+        "slug": "newsletter"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "subject": "the legacy importer",
+        "source": "retired engineer's notes",
+        "slug": "notes"
+      }
+    }
+  ]
+}

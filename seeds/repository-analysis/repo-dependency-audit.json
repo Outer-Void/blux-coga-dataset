@@ -1,0 +1,77 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "repo-dependency-audit",
+  "category": "repository-analysis",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "critique",
+    "dependencies"
+  ],
+  "instruction": "Critique the dependency audit for ${repo}: check that claims about licence compliance and update policy are actually backed by evidence.",
+  "input": {
+    "capability": "reason.critique",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "sbom",
+          "claim": "An SBOM was generated for release ${tag}",
+          "kind": "dataset",
+          "reliability": 0.8
+        },
+        {
+          "id": "policy",
+          "claim": "Update policy draft, not adopted",
+          "kind": "document",
+          "reliability": 0.3
+        }
+      ],
+      "claims": [
+        {
+          "id": "licences",
+          "statement": "All licences are compatible",
+          "supported_by": [
+            "sbom"
+          ]
+        },
+        {
+          "id": "updates",
+          "statement": "Updates follow the policy",
+          "supported_by": [
+            "policy"
+          ]
+        },
+        {
+          "id": "clean",
+          "statement": "The repository is compliant",
+          "depends_on": [
+            "licences",
+            "updates"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "repo": "edge-proxy",
+        "tag": "v3.2.0"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "repo": "ml-features",
+        "tag": "v0.9.1"
+      }
+    }
+  ]
+}

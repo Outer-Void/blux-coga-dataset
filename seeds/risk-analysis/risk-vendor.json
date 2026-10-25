@@ -1,0 +1,75 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "risk-vendor",
+  "category": "risk-analysis",
+  "split": "validation",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "risk",
+    "vendor"
+  ],
+  "instruction": "Assess vendor risks for adopting ${vendor}: lock-in, price rises and a security incident. Which risks rest on unsupported likelihoods?",
+  "input": {
+    "capability": "reason.risk",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "contract",
+          "claim": "Contract allows 12% annual price increases",
+          "kind": "document",
+          "reliability": 0.8
+        }
+      ],
+      "risks": [
+        {
+          "id": "lockin",
+          "title": "Lock-in to ${vendor} APIs",
+          "likelihood": 0.6,
+          "impact": 3,
+          "mitigations": [
+            {
+              "id": "adapter",
+              "applies_to": "impact",
+              "reduction": 0.5
+            }
+          ]
+        },
+        {
+          "id": "price",
+          "title": "Price rises",
+          "likelihood": 0.7,
+          "impact": 2,
+          "evidence": [
+            "contract"
+          ]
+        },
+        {
+          "id": "breach",
+          "title": "Security incident at ${vendor}",
+          "likelihood": 0.05,
+          "impact": 5
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "vendor": "a hosted feature-flag service"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "vendor": "an e-signature platform"
+      }
+    }
+  ]
+}

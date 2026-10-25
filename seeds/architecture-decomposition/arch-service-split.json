@@ -1,0 +1,114 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "arch-service-split",
+  "category": "architecture-decomposition",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "decompose",
+    "services"
+  ],
+  "instruction": "Break the ${system} into components. ${front} is the entry point; ${core} and ${store} sit behind it, and ${worker} depends on ${core}. Report the work packages and which acceptance criteria are covered.",
+  "input": {
+    "capability": "reason.decompose",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "id": "goal",
+        "statement": "Split the ${system} into independently deployable components",
+        "acceptance": [
+          {
+            "id": "A1",
+            "statement": "${front} can be deployed on its own",
+            "covered_by": [
+              "${front}"
+            ]
+          },
+          {
+            "id": "A2",
+            "statement": "${store} has a single owner",
+            "covered_by": [
+              "${store}"
+            ]
+          },
+          {
+            "id": "A3",
+            "statement": "Background work survives a ${core} restart"
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "${front}",
+          "statement": "${front_desc}"
+        },
+        {
+          "id": "${core}",
+          "statement": "${core_desc}",
+          "parent": "${front}"
+        },
+        {
+          "id": "${store}",
+          "statement": "${store_desc}",
+          "parent": "${core}"
+        },
+        {
+          "id": "${worker}",
+          "statement": "${worker_desc}",
+          "depends_on": [
+            "${core}"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "system": "order platform",
+        "front": "storefront",
+        "core": "checkout",
+        "store": "orderdb",
+        "worker": "fulfilment",
+        "front_desc": "Web storefront and cart",
+        "core_desc": "Checkout and payment orchestration",
+        "store_desc": "Order database and schema",
+        "worker_desc": "Fulfilment queue consumer"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "system": "media pipeline",
+        "front": "uploader",
+        "core": "transcoder",
+        "store": "assetstore",
+        "worker": "thumbnailer",
+        "front_desc": "Upload API for video files",
+        "core_desc": "Transcoding job scheduler",
+        "store_desc": "Object storage for rendered assets",
+        "worker_desc": "Thumbnail generation worker"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "system": "identity gateway",
+        "front": "gateway",
+        "core": "sessions",
+        "store": "userdir",
+        "worker": "auditor",
+        "front_desc": "Edge gateway terminating TLS",
+        "core_desc": "Session and token issuance",
+        "store_desc": "User directory with credentials metadata",
+        "worker_desc": "Login audit trail writer"
+      }
+    }
+  ]
+}

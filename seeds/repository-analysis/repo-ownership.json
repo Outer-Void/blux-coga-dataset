@@ -1,0 +1,78 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "repo-ownership",
+  "category": "repository-analysis",
+  "split": "regression",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "ownership"
+  ],
+  "instruction": "Pin the analysis of who owns ${area} in the monorepo, given CODEOWNERS, commit history and an out-of-date wiki page.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "codeowners",
+          "claim": "CODEOWNERS assigns ${area} to the platform team",
+          "kind": "document",
+          "reliability": 0.8
+        },
+        {
+          "id": "history",
+          "claim": "Most recent commits come from the ${team} team",
+          "kind": "measurement",
+          "reliability": 0.9
+        },
+        {
+          "id": "wiki",
+          "claim": "Wiki lists a team that no longer exists",
+          "kind": "document",
+          "reliability": 0.2
+        }
+      ],
+      "claims": [
+        {
+          "id": "platform",
+          "statement": "The platform team owns ${area}",
+          "supported_by": [
+            "codeowners"
+          ],
+          "contradicted_by": [
+            "history"
+          ]
+        },
+        {
+          "id": "active",
+          "statement": "The ${team} team maintains ${area}",
+          "supported_by": [
+            "history"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "area": "the build scripts",
+        "team": "developer-experience"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "area": "the auth module",
+        "team": "identity"
+      }
+    }
+  ]
+}

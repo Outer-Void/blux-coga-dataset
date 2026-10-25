@@ -1,0 +1,89 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "critique-security-review",
+  "category": "evidence-critique",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "critique",
+    "security"
+  ],
+  "instruction": "Review the evidence behind \"${claim}\". Flag unused evidence, unverified dataset sources and claims that depend on weak ones.",
+  "input": {
+    "capability": "reason.critique",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "scan",
+          "claim": "Scanner reported zero critical findings",
+          "kind": "dataset",
+          "reliability": 0.7,
+          "source": {
+            "dataset": {
+              "dataset_id": "scanner-results",
+              "version": "${ver}",
+              "record_id": "run-1"
+            }
+          }
+        },
+        {
+          "id": "pentest",
+          "claim": "External test is scheduled, not done",
+          "kind": "document",
+          "reliability": 0.6
+        },
+        {
+          "id": "chat",
+          "claim": "An engineer said the endpoint is internal only",
+          "kind": "testimony"
+        }
+      ],
+      "claims": [
+        {
+          "id": "secure",
+          "statement": "${claim}",
+          "supported_by": [
+            "scan"
+          ]
+        },
+        {
+          "id": "internal",
+          "statement": "The endpoint is not reachable from outside",
+          "supported_by": [
+            "chat"
+          ]
+        },
+        {
+          "id": "ship",
+          "statement": "It is safe to ship",
+          "depends_on": [
+            "secure",
+            "internal"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "claim": "The upload service has no critical vulnerabilities",
+        "ver": "2026.10"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "claim": "The admin API is hardened",
+        "ver": "2026.09"
+      }
+    }
+  ]
+}

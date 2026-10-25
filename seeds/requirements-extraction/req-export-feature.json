@@ -1,0 +1,97 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "req-export-feature",
+  "category": "requirements-extraction",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "decompose",
+    "requirements"
+  ],
+  "instruction": "Turn the request \"${ask}\" into requirement items and trace them to the acceptance criteria. Report coverage and anything untraced.",
+  "input": {
+    "capability": "reason.decompose",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "${ask}",
+        "acceptance": [
+          {
+            "id": "format",
+            "statement": "Exports are valid ${fmt}",
+            "covered_by": [
+              "serializer"
+            ]
+          },
+          {
+            "id": "large",
+            "statement": "Exports of ${size} rows finish",
+            "covered_by": [
+              "streaming"
+            ]
+          },
+          {
+            "id": "perm",
+            "statement": "Only owners can export"
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "button",
+          "statement": "Export button on the ${screen} screen"
+        },
+        {
+          "id": "serializer",
+          "statement": "${fmt} serializer",
+          "parent": "button"
+        },
+        {
+          "id": "streaming",
+          "statement": "Streaming writer for large exports",
+          "depends_on": [
+            "serializer"
+          ]
+        },
+        {
+          "id": "telemetry",
+          "statement": "Usage telemetry for exports"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "ask": "Let users export their reports to CSV",
+        "fmt": "CSV",
+        "size": "a million",
+        "screen": "reports"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "ask": "Allow exporting contacts as vCard",
+        "fmt": "vCard",
+        "size": "fifty thousand",
+        "screen": "contacts"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "ask": "Export the audit history to JSON Lines",
+        "fmt": "JSON Lines",
+        "size": "ten million",
+        "screen": "audit"
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "adv-contradictory-constraints",
+  "category": "adversarial-conflicting-instructions",
+  "split": "adversarial",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "conflict"
+  ],
+  "instruction": "The instructions say ${a} must happen before ${b} and ${b} before ${a}. The planner must report the contradiction instead of inventing an order.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "tasks": [
+        {
+          "id": "${a}",
+          "title": "${a}",
+          "depends_on": [
+            "${b}"
+          ]
+        },
+        {
+          "id": "${b}",
+          "title": "${b}",
+          "depends_on": [
+            "${a}"
+          ]
+        },
+        {
+          "id": "${c}",
+          "title": "${c}"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "a": "approve",
+        "b": "review",
+        "c": "notify"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "a": "deploy",
+        "b": "test",
+        "c": "announce"
+      }
+    }
+  ]
+}

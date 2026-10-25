@@ -1,0 +1,91 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "critique-perf-claim",
+  "category": "evidence-critique",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "critique",
+    "performance"
+  ],
+  "instruction": "Critique the claim that ${tech} makes ${thing} ${gain} faster. Check whether it rests on a single source, assumptions only, or evidence that is contradicted.",
+  "input": {
+    "capability": "reason.critique",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "blog",
+          "claim": "A vendor blog post reports the speed-up",
+          "kind": "document",
+          "reliability": 0.4,
+          "source": {
+            "uri": "https://example.com/blog/${tech}"
+          }
+        },
+        {
+          "id": "guess",
+          "claim": "The team expects similar gains",
+          "kind": "assumption"
+        },
+        {
+          "id": "ours",
+          "claim": "Our benchmark showed no change",
+          "kind": "measurement",
+          "reliability": 0.9
+        }
+      ],
+      "claims": [
+        {
+          "id": "faster",
+          "statement": "${tech} makes ${thing} ${gain} faster",
+          "supported_by": [
+            "blog",
+            "guess"
+          ],
+          "contradicted_by": [
+            "ours"
+          ]
+        },
+        {
+          "id": "adopt",
+          "statement": "We should adopt ${tech}",
+          "depends_on": [
+            "faster"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "tech": "http3",
+        "thing": "page loads",
+        "gain": "30%"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "tech": "jit-compilation",
+        "thing": "report generation",
+        "gain": "twice as"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "tech": "columnar-storage",
+        "thing": "dashboard queries",
+        "gain": "ten times"
+      }
+    }
+  ]
+}

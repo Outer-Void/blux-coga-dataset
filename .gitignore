@@ -33,3 +33,7 @@ build/
 coverage/
 .cache/
 *.tmp
+
+# dstool: the private deny list never leaves this machine; exports are produced on demand
+.private-terms
+/out/

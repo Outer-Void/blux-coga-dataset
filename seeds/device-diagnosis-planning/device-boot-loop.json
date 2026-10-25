@@ -1,0 +1,95 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "device-boot-loop",
+  "category": "device-diagnosis-planning",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "device"
+  ],
+  "instruction": "A ${device} is stuck in a boot loop after ${event}. Plan the diagnosis: capture logs, check the battery, safe mode, cache wipe, and a reflash only if the earlier steps fail.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "Recover the ${device} without data loss"
+      },
+      "tasks": [
+        {
+          "id": "logs",
+          "title": "Capture boot logs over USB",
+          "effort": 1
+        },
+        {
+          "id": "battery",
+          "title": "Check battery health",
+          "effort": 1
+        },
+        {
+          "id": "safemode",
+          "title": "Boot into safe mode",
+          "effort": 1,
+          "depends_on": [
+            "logs"
+          ]
+        },
+        {
+          "id": "cache",
+          "title": "Wipe the cache partition",
+          "effort": 1,
+          "depends_on": [
+            "safemode",
+            "battery"
+          ]
+        },
+        {
+          "id": "backup",
+          "title": "Back up user data",
+          "effort": 2,
+          "depends_on": [
+            "safemode"
+          ]
+        },
+        {
+          "id": "reflash",
+          "title": "Reflash firmware",
+          "effort": 3,
+          "depends_on": [
+            "cache",
+            "backup"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "device": "rugged tablet",
+        "event": "an OTA update"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "device": "point-of-sale terminal",
+        "event": "a power cut"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "device": "Android test phone",
+        "event": "a kernel change"
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "blux.dataset-config",
+  "dataset_id": "blux-coga-dataset",
+  "title": "BLUX CogA Dataset",
+  "version": "2.0.0",
+  "release_date": "2026-10-25",
+  "summary": "Explicit, deterministic reasoning records for BLUX CogA 2. Each record pairs a plain-language task with the structured coga.request that expresses it and the coga.artifact (or refusal) the pinned CogA engine actually produced: claims weighed against evidence, plans, comparisons, decompositions, critiques, rankings and risk scores, each with confidence, uncertainty sources and replay metadata. There is no hidden chain-of-thought anywhere: the reasoning is the explicit structure.",
+  "license": {"spdx": "LicenseRef-BLUX-Proprietary", "name": "BLUX Proprietary License", "file": "LICENSE"},
+  "authors": ["Outer Void"],
+  "adapter": "coga",
+  "engines": [
+    {"name": "coga", "package": "blux-coga", "version": "2.0.0", "commit": "64375dcc638c63dad31c817b88cb605a6452cf6d"}
+  ],
+  "id_prefix": "cg",
+  "categories": [
+    {"id": "architecture-decomposition", "title": "Architecture decomposition", "description": "Component trees, work packages and acceptance coverage (reason.decompose)."},
+    {"id": "planning", "title": "Planning", "description": "Dependency order, critical path, slack and parallel schedules (reason.plan)."},
+    {"id": "tradeoff-analysis", "title": "Tradeoff analysis", "description": "Weighted multi-criteria comparison, dominance and sensitivity (reason.compare)."},
+    {"id": "debugging-hypotheses", "title": "Debugging hypotheses", "description": "Candidate causes weighed against observations (reason.analyze)."},
+    {"id": "risk-analysis", "title": "Risk analysis", "description": "Likelihood x impact, mitigations, residuals and appetite (reason.risk)."},
+    {"id": "requirements-extraction", "title": "Requirements extraction", "description": "Requirement items traced to acceptance criteria (reason.decompose)."},
+    {"id": "evidence-critique", "title": "Evidence critique", "description": "Exact critique rules over claims and their support (reason.critique)."},
+    {"id": "conflict-resolution", "title": "Conflict resolution", "description": "Conflicting preferences and contested causes (reason.rank, reason.analyze)."},
+    {"id": "capability-planning", "title": "Capability planning", "description": "Building a capability under limited people or slots (reason.plan)."},
+    {"id": "repository-analysis", "title": "Repository analysis", "description": "Claims about a code repository checked against findings (reason.analyze, reason.critique)."},
+    {"id": "device-diagnosis-planning", "title": "Device diagnosis planning", "description": "Diagnosis plans and hypotheses for device faults (reason.plan, reason.analyze)."},
+    {"id": "adversarial-conflicting-instructions", "title": "Adversarial and conflicting instructions", "description": "Injected text, smuggled fields and contradictory constraints the engine must not obey."},
+    {"id": "incomplete-evidence", "title": "Incomplete evidence", "description": "Claims without support, unused evidence and missing sources."},
+    {"id": "uncertainty-handling", "title": "Uncertainty handling", "description": "Close calls, unsupported likelihoods and single-source evidence, with explicit uncertainty."},
+    {"id": "refusal-escalation", "title": "Refusal and escalation", "description": "Requests the engine refuses, and results uncertain enough to hand to a person."}
+  ],
+  "canary": "e8c0a0fe-edd6-49ae-9ac6-b19b680690dc",
+  "quality_threshold": 0.6,
+  "near_duplicate_threshold": 0.8,
+  "card": {
+    "pretty_name": "BLUX CogA Dataset",
+    "tags": ["reasoning", "structured-reasoning", "planning", "evaluation", "deterministic"],
+    "record_format": "For this dataset, `input` is `{capability, request}` (a `coga.request` v1) and `expected` is `{kind: \"artifact\", output: <coga.artifact>}` or `{kind: \"error\", output: {code, message, details}}`. Artifacts validate against the artifact schema the pinned engine ships; `artifact_id` identifies the result and `coga replay` recomputes it.",
+    "intended_use": [
+      "Training and evaluating models to express problems as explicit, checkable reasoning structures (claims, evidence, tasks, criteria, risks) rather than free text.",
+      "Regression testing CogA: the `regression` split pins exact engine outputs.",
+      "Robustness evaluation with the `adversarial` split (injection, smuggled fields, contradictions)."
+    ],
+    "out_of_scope": [
+      "Training on hidden or free-form chain-of-thought: the dataset has none and must not be extended with any.",
+      "Treating CogA results as decisions: they measure the structure supplied, they do not recommend.",
+      "Training on test, holdout, adversarial or regression records."
+    ],
+    "limitations": [
+      "All tasks are synthetic and authored for this dataset; they are realistic in shape but not drawn from real incidents.",
+      "Expected outputs are what CogA 2.0.0 computes, not human judgements of the best answer.",
+      "Instructions are English only.",
+      "Variants within a family share structure, so the effective diversity is the number of families, not records."
+    ]
+  }
+}

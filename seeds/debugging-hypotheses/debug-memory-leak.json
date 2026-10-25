@@ -1,0 +1,83 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "debug-memory-leak",
+  "category": "debugging-hypotheses",
+  "split": "holdout",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "memory"
+  ],
+  "instruction": "Resident memory of ${proc} grows ${rate} per hour until it is killed. Evaluate the cache, the listener and the allocator hypotheses; the listener claim depends on the cache claim.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "heap",
+          "claim": "Heap snapshots show growing cache entries",
+          "kind": "measurement",
+          "reliability": 0.9
+        },
+        {
+          "id": "ttl",
+          "claim": "Cache entries have no expiry configured",
+          "kind": "document",
+          "reliability": 0.8
+        },
+        {
+          "id": "listeners",
+          "claim": "Listener count is flat across snapshots",
+          "kind": "measurement",
+          "reliability": 0.85
+        }
+      ],
+      "claims": [
+        {
+          "id": "cache",
+          "statement": "An unbounded cache leaks",
+          "supported_by": [
+            "heap",
+            "ttl"
+          ]
+        },
+        {
+          "id": "listener",
+          "statement": "Event listeners are never removed",
+          "contradicted_by": [
+            "listeners"
+          ],
+          "depends_on": [
+            "cache"
+          ]
+        },
+        {
+          "id": "allocator",
+          "statement": "Allocator fragmentation explains the growth"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "proc": "the image resizer",
+        "rate": "40 MB"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "proc": "the websocket hub",
+        "rate": "15 MB"
+      }
+    }
+  ]
+}

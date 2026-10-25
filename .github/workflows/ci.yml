@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "stage-*/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dataset:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install the pinned engine and tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+      - name: Lint and types
+        run: |
+          ruff format --check .
+          ruff check .
+          mypy
+      - name: Generated files are current
+        run: |
+          python -m dstool schemas --check
+          python -m dstool card --check
+      - name: All records validate (schemas, hashes, lock, contamination, manifest)
+        run: python -m dstool validate
+      - name: Reproducible (rebuild with the pinned engine; byte-identical)
+        run: python -m dstool build --check
+      - name: Tests (contamination, protected splits, immutability, privacy, reproducibility)
+        run: python -m pytest -q
+      - name: Legacy v1.0 fixtures against the frozen CogA 1.0 contract
+        env:
+          BLUX_COGA_BIN: blux-coga
+        run: |
+          python legacy/scripts/verify_fixtures.py
+          python legacy/scripts/run_harness.py

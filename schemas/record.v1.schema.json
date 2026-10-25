@@ -1,0 +1,284 @@
+{
+  "$id": "urn:outervoid:dataset:record.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "canary": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "category": {
+      "enum": [
+        "architecture-decomposition",
+        "planning",
+        "tradeoff-analysis",
+        "debugging-hypotheses",
+        "risk-analysis",
+        "requirements-extraction",
+        "evidence-critique",
+        "conflict-resolution",
+        "capability-planning",
+        "repository-analysis",
+        "device-diagnosis-planning",
+        "adversarial-conflicting-instructions",
+        "incomplete-evidence",
+        "uncertainty-handling",
+        "refusal-escalation"
+      ]
+    },
+    "dataset": {
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "type": "string"
+    },
+    "dataset_version": {
+      "type": "string"
+    },
+    "expected": {
+      "type": "object"
+    },
+    "family": {
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "type": "string"
+    },
+    "hashes": {
+      "additionalProperties": false,
+      "properties": {
+        "content_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "expected_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "input_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "input_sha256",
+        "expected_sha256",
+        "content_sha256"
+      ],
+      "type": "object"
+    },
+    "input": {
+      "type": "object"
+    },
+    "provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "authors": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "created": {
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "type": "string"
+        },
+        "engines": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "commit": {
+                "pattern": "^[0-9a-f]{40}$",
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "package": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "package",
+              "version",
+              "commit"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "generator": {
+          "required": [
+            "name",
+            "version"
+          ],
+          "type": "object"
+        },
+        "license": {
+          "additionalProperties": false,
+          "properties": {
+            "file": {
+              "type": "string"
+            },
+            "name": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "spdx": {
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "spdx",
+            "name"
+          ],
+          "type": "object"
+        },
+        "origin": {
+          "enum": [
+            "synthetic-authored",
+            "imported"
+          ]
+        },
+        "review": {
+          "properties": {
+            "status": {
+              "const": "approved"
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "type": "object"
+        },
+        "seed": {
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "type": "object"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "origin",
+        "authors",
+        "license",
+        "seed",
+        "generator",
+        "engines",
+        "created",
+        "review"
+      ],
+      "type": "object"
+    },
+    "quality": {
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "additionalProperties": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "type": "object"
+        },
+        "score": {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "threshold": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "score",
+        "threshold",
+        "components"
+      ],
+      "type": "object"
+    },
+    "record_id": {
+      "pattern": "^[a-z]{2}:[a-z0-9][a-z0-9-]{1,62}:[0-9]{2}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "blux.dataset-record"
+    },
+    "schema_version": {
+      "const": 1
+    },
+    "split": {
+      "enum": [
+        "train",
+        "validation",
+        "test",
+        "holdout",
+        "adversarial",
+        "regression"
+      ]
+    },
+    "tags": {
+      "items": {
+        "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "task": {
+      "additionalProperties": false,
+      "properties": {
+        "instruction": {
+          "maxLength": 4000,
+          "minLength": 20,
+          "type": "string"
+        }
+      },
+      "required": [
+        "instruction"
+      ],
+      "type": "object"
+    },
+    "variant": {
+      "pattern": "^[0-9]{2}$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "schema_version",
+    "dataset",
+    "dataset_version",
+    "record_id",
+    "family",
+    "variant",
+    "category",
+    "split",
+    "task",
+    "input",
+    "expected",
+    "provenance",
+    "quality",
+    "hashes",
+    "tags",
+    "canary"
+  ],
+  "type": "object"
+}

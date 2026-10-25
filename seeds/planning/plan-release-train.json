@@ -1,0 +1,96 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "plan-release-train",
+  "category": "planning",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "release"
+  ],
+  "instruction": "Order the work for the ${release} release: freeze, ${feature}, translations, QA and ship. Give the critical path and what can run in parallel with ${lanes} people.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "Ship ${release}"
+      },
+      "max_parallel": "${lanes}",
+      "tasks": [
+        {
+          "id": "freeze",
+          "title": "Feature freeze",
+          "effort": 1
+        },
+        {
+          "id": "feature",
+          "title": "${feature}",
+          "effort": "${feature_effort}",
+          "depends_on": [
+            "freeze"
+          ]
+        },
+        {
+          "id": "translations",
+          "title": "Translations",
+          "effort": 2,
+          "depends_on": [
+            "freeze"
+          ]
+        },
+        {
+          "id": "qa",
+          "title": "QA pass",
+          "effort": 3,
+          "depends_on": [
+            "feature",
+            "translations"
+          ]
+        },
+        {
+          "id": "ship",
+          "title": "Ship to stores",
+          "effort": 1,
+          "depends_on": [
+            "qa"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "release": "spring",
+        "feature": "Dark mode polish",
+        "feature_effort": 4,
+        "lanes": 2
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "release": "autumn",
+        "feature": "Payments rework",
+        "feature_effort": 8,
+        "lanes": 3
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "release": "holiday",
+        "feature": "Gift cards",
+        "feature_effort": 5,
+        "lanes": 1
+      }
+    }
+  ]
+}

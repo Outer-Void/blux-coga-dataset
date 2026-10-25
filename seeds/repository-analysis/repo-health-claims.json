@@ -1,0 +1,101 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "repo-health-claims",
+  "category": "repository-analysis",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "repository"
+  ],
+  "instruction": "Assess the health claims about the ${repo} repository: tests are reliable, dependencies are current, and releases are reproducible, given what the checks found.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "ci",
+          "claim": "CI passed ${passes} of the last 50 runs",
+          "kind": "measurement",
+          "reliability": 0.9
+        },
+        {
+          "id": "outdated",
+          "claim": "${stale} direct dependencies are a major version behind",
+          "kind": "measurement",
+          "reliability": 0.85
+        },
+        {
+          "id": "lock",
+          "claim": "No lockfile is committed",
+          "kind": "observation",
+          "reliability": 0.9
+        },
+        {
+          "id": "readme",
+          "claim": "README states builds are reproducible",
+          "kind": "document",
+          "reliability": 0.4
+        }
+      ],
+      "claims": [
+        {
+          "id": "tests",
+          "statement": "The test suite is reliable",
+          "supported_by": [
+            "ci"
+          ]
+        },
+        {
+          "id": "deps",
+          "statement": "Dependencies are current",
+          "contradicted_by": [
+            "outdated"
+          ]
+        },
+        {
+          "id": "repro",
+          "statement": "Releases are reproducible",
+          "supported_by": [
+            "readme"
+          ],
+          "contradicted_by": [
+            "lock"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "repo": "payments-sdk",
+        "passes": 49,
+        "stale": 3
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "repo": "mobile-shell",
+        "passes": 41,
+        "stale": 7
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "repo": "docs-generator",
+        "passes": 50,
+        "stale": 1
+      }
+    }
+  ]
+}

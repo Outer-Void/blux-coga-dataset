@@ -1,0 +1,100 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "debug-latency-spike",
+  "category": "debugging-hypotheses",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "debugging"
+  ],
+  "instruction": "p99 latency on ${svc} jumped after ${change}. Weigh the hypotheses (pool exhaustion, a slow query, GC pauses) against the observations and say which are supported, refuted or contested.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "question": "Why did ${svc} p99 latency jump?",
+      "evidence": [
+        {
+          "id": "pool",
+          "claim": "Connection pool waits rose from 2 ms to 180 ms",
+          "kind": "measurement",
+          "reliability": 0.9
+        },
+        {
+          "id": "slowlog",
+          "claim": "No new entries in the slow query log",
+          "kind": "observation",
+          "reliability": 0.8
+        },
+        {
+          "id": "gc",
+          "claim": "GC pause time unchanged in heap metrics",
+          "kind": "measurement",
+          "reliability": 0.85
+        },
+        {
+          "id": "deploy",
+          "claim": "${change} lowered the pool size from 50 to ${pool}",
+          "kind": "document",
+          "reliability": 0.7
+        }
+      ],
+      "claims": [
+        {
+          "id": "exhaustion",
+          "statement": "The connection pool is exhausted",
+          "supported_by": [
+            "pool",
+            "deploy"
+          ]
+        },
+        {
+          "id": "slowquery",
+          "statement": "A new slow query causes it",
+          "contradicted_by": [
+            "slowlog"
+          ]
+        },
+        {
+          "id": "gcpause",
+          "statement": "Garbage collection pauses cause it",
+          "contradicted_by": [
+            "gc"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "svc": "the cart API",
+        "change": "Tuesday's config deploy",
+        "pool": 10
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "svc": "the search backend",
+        "change": "the 4.2 release",
+        "pool": 8
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "svc": "the profile service",
+        "change": "the autoscaling change",
+        "pool": 12
+      }
+    }
+  ]
+}

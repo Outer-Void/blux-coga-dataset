@@ -1,0 +1,90 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "tradeoff-language",
+  "category": "tradeoff-analysis",
+  "split": "validation",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "compare",
+    "engineering"
+  ],
+  "instruction": "Pick an implementation language for the ${tool}: ${l1}, ${l2} or ${l3}, scored on runtime speed, hiring pool and existing code reuse.",
+  "input": {
+    "capability": "reason.compare",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "criteria": [
+        {
+          "id": "speed",
+          "weight": 1,
+          "direction": "max"
+        },
+        {
+          "id": "hiring",
+          "weight": 2,
+          "direction": "max"
+        },
+        {
+          "id": "reuse",
+          "weight": 3,
+          "direction": "max"
+        }
+      ],
+      "options": [
+        {
+          "id": "${l1}",
+          "title": "${l1}",
+          "values": {
+            "speed": 9,
+            "hiring": 4,
+            "reuse": 2
+          }
+        },
+        {
+          "id": "${l2}",
+          "title": "${l2}",
+          "values": {
+            "speed": 5,
+            "hiring": 9,
+            "reuse": "${reuse2}"
+          }
+        },
+        {
+          "id": "${l3}",
+          "title": "${l3}",
+          "values": {
+            "speed": 7,
+            "hiring": 6
+          }
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "tool": "log shipper",
+        "l1": "rust",
+        "l2": "python",
+        "l3": "go",
+        "reuse2": 8
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "tool": "build cache",
+        "l1": "zig",
+        "l2": "typescript",
+        "l3": "kotlin",
+        "reuse2": 3
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "escalate-low-confidence",
+  "category": "refusal-escalation",
+  "split": "regression",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "escalation"
+  ],
+  "instruction": "The only support for \"${claim}\" is an assumption. Pin the high-uncertainty result that should send this to a person rather than act on it.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "assume",
+          "claim": "We assume ${claim_lower}",
+          "kind": "assumption"
+        }
+      ],
+      "claims": [
+        {
+          "id": "claim",
+          "statement": "${claim}",
+          "supported_by": [
+            "assume"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "claim": "The backup restores cleanly",
+        "claim_lower": "the backup restores cleanly"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "claim": "The vendor will renew on the same terms",
+        "claim_lower": "the vendor will renew on the same terms"
+      }
+    }
+  ]
+}

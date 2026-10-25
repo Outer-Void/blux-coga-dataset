@@ -1,0 +1,79 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "req-audit-log",
+  "category": "requirements-extraction",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "decompose",
+    "compliance"
+  ],
+  "instruction": "Extract requirements for an audit log that satisfies ${standard}: capture, tamper evidence, retention and search. Which acceptance criteria lack an item?",
+  "input": {
+    "capability": "reason.decompose",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "Audit logging for ${standard}",
+        "acceptance": [
+          {
+            "id": "who",
+            "statement": "Every change records the actor",
+            "covered_by": [
+              "capture"
+            ]
+          },
+          {
+            "id": "tamper",
+            "statement": "Tampering is detectable",
+            "covered_by": [
+              "hashchain"
+            ]
+          },
+          {
+            "id": "keep",
+            "statement": "Entries are kept for ${years} years"
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "capture",
+          "statement": "Capture middleware"
+        },
+        {
+          "id": "hashchain",
+          "statement": "Hash-chained storage",
+          "depends_on": [
+            "capture"
+          ]
+        },
+        {
+          "id": "search",
+          "statement": "Search UI for auditors"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "standard": "SOC 2",
+        "years": "seven"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "standard": "ISO 27001",
+        "years": "three"
+      }
+    }
+  ]
+}

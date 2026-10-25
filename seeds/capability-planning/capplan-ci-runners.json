@@ -1,0 +1,76 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "capplan-ci-runners",
+  "category": "capability-planning",
+  "split": "validation",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "ci"
+  ],
+  "instruction": "Plan adding ${arch} CI runners: procurement, images, caching, pilot repos and rollout, with ${slots} people working in parallel.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "max_parallel": "${slots}",
+      "tasks": [
+        {
+          "id": "procure",
+          "title": "Procure ${arch} hosts",
+          "effort": 3
+        },
+        {
+          "id": "images",
+          "title": "Build runner images",
+          "effort": 2
+        },
+        {
+          "id": "cache",
+          "title": "Shared build cache",
+          "effort": 2,
+          "depends_on": [
+            "images"
+          ]
+        },
+        {
+          "id": "pilot",
+          "title": "Pilot on three repos",
+          "effort": 2,
+          "depends_on": [
+            "procure",
+            "cache"
+          ]
+        },
+        {
+          "id": "rollout",
+          "title": "Org-wide rollout",
+          "depends_on": [
+            "pilot"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "arch": "ARM64",
+        "slots": 2
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "arch": "GPU",
+        "slots": 1
+      }
+    }
+  ]
+}

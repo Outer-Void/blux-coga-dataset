@@ -1,0 +1,79 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "plan-onboarding",
+  "category": "planning",
+  "split": "regression",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "people"
+  ],
+  "instruction": "Sequence onboarding for a new ${role}: laptop, accounts, shadowing, first ticket, and review. Pin the exact schedule the engine computes.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "tasks": [
+        {
+          "id": "laptop",
+          "title": "Provision laptop",
+          "effort": 1
+        },
+        {
+          "id": "accounts",
+          "title": "Create accounts",
+          "effort": 1,
+          "depends_on": [
+            "laptop"
+          ]
+        },
+        {
+          "id": "shadow",
+          "title": "Shadow a ${mentor}",
+          "effort": 3,
+          "depends_on": [
+            "accounts"
+          ]
+        },
+        {
+          "id": "ticket",
+          "title": "Close a first ticket",
+          "effort": 2,
+          "depends_on": [
+            "accounts"
+          ]
+        },
+        {
+          "id": "review",
+          "title": "Thirty-day review",
+          "effort": 1,
+          "depends_on": [
+            "shadow",
+            "ticket"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "role": "support engineer",
+        "mentor": "senior agent"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "role": "site reliability engineer",
+        "mentor": "on-call lead"
+      }
+    }
+  ]
+}

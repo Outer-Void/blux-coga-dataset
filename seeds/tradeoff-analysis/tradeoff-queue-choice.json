@@ -1,0 +1,143 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "tradeoff-queue-choice",
+  "category": "tradeoff-analysis",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "compare",
+    "infrastructure"
+  ],
+  "instruction": "Compare ${a}, ${b} and ${c} for the ${use} queue on throughput, operating cost and team familiarity. Which option leads, is anything dominated, and is the result stable under weight changes?",
+  "input": {
+    "capability": "reason.compare",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "bench",
+          "claim": "Load test results on staging hardware",
+          "kind": "measurement",
+          "reliability": 0.9
+        },
+        {
+          "id": "quote",
+          "claim": "Vendor price sheet for the expected volume",
+          "kind": "document",
+          "reliability": 0.7
+        }
+      ],
+      "criteria": [
+        {
+          "id": "throughput",
+          "weight": 3,
+          "direction": "max"
+        },
+        {
+          "id": "cost",
+          "weight": 2,
+          "direction": "min"
+        },
+        {
+          "id": "familiarity",
+          "weight": 1,
+          "direction": "max"
+        }
+      ],
+      "options": [
+        {
+          "id": "${a}",
+          "title": "${a}",
+          "values": {
+            "throughput": "${a_t}",
+            "cost": "${a_c}",
+            "familiarity": 3
+          },
+          "evidence": {
+            "throughput": [
+              "bench"
+            ],
+            "cost": [
+              "quote"
+            ]
+          }
+        },
+        {
+          "id": "${b}",
+          "title": "${b}",
+          "values": {
+            "throughput": "${b_t}",
+            "cost": "${b_c}",
+            "familiarity": 5
+          },
+          "evidence": {
+            "throughput": [
+              "bench"
+            ]
+          }
+        },
+        {
+          "id": "${c}",
+          "title": "${c}",
+          "values": {
+            "throughput": "${c_t}",
+            "cost": "${c_c}",
+            "familiarity": 1
+          }
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "use": "order events",
+        "a": "kafka",
+        "b": "rabbitmq",
+        "c": "nats",
+        "a_t": 90,
+        "a_c": 40,
+        "b_t": 40,
+        "b_c": 20,
+        "c_t": 70,
+        "c_c": 15
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "use": "email delivery",
+        "a": "sqs",
+        "b": "redis-streams",
+        "c": "pulsar",
+        "a_t": 50,
+        "a_c": 10,
+        "b_t": 60,
+        "b_c": 12,
+        "c_t": 80,
+        "c_c": 45
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "use": "audit trail",
+        "a": "kinesis",
+        "b": "postgres-queue",
+        "c": "zeromq",
+        "a_t": 85,
+        "a_c": 50,
+        "b_t": 20,
+        "b_c": 5,
+        "c_t": 95,
+        "c_c": 30
+      }
+    }
+  ]
+}

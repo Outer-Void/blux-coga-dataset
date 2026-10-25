@@ -1,0 +1,209 @@
+{
+  "duplicates_dropped": [],
+  "max_cross_split_similarity": 0.0968,
+  "method": "Jaccard of 4-token shingles over the normalized instruction and input; exact = identical tokens",
+  "problems": [],
+  "protected": {
+    "cg:adv-contradictory-constraints:01": {
+      "max_similarity_to_other_splits": 0.0495,
+      "nearest_training_record": null
+    },
+    "cg:adv-contradictory-constraints:02": {
+      "max_similarity_to_other_splits": 0.0495,
+      "nearest_training_record": null
+    },
+    "cg:adv-injected-evidence:01": {
+      "max_similarity_to_other_splits": 0.0508,
+      "nearest_training_record": "cg:refuse-unknown-reference:01"
+    },
+    "cg:adv-injected-evidence:02": {
+      "max_similarity_to_other_splits": 0.0508,
+      "nearest_training_record": "cg:refuse-unknown-reference:01"
+    },
+    "cg:adv-injected-evidence:03": {
+      "max_similarity_to_other_splits": 0.0522,
+      "nearest_training_record": "cg:refuse-unknown-reference:01"
+    },
+    "cg:adv-smuggled-reasoning:01": {
+      "max_similarity_to_other_splits": 0.0806,
+      "nearest_training_record": null
+    },
+    "cg:adv-smuggled-reasoning:02": {
+      "max_similarity_to_other_splits": 0.0952,
+      "nearest_training_record": null
+    },
+    "cg:adv-smuggled-reasoning:03": {
+      "max_similarity_to_other_splits": 0.0968,
+      "nearest_training_record": null
+    },
+    "cg:arch-data-platform:01": {
+      "max_similarity_to_other_splits": 0.0378,
+      "nearest_training_record": null
+    },
+    "cg:arch-data-platform:02": {
+      "max_similarity_to_other_splits": 0.0374,
+      "nearest_training_record": null
+    },
+    "cg:capplan-skill-gaps:01": {
+      "max_similarity_to_other_splits": 0.0565,
+      "nearest_training_record": null
+    },
+    "cg:capplan-skill-gaps:02": {
+      "max_similarity_to_other_splits": 0.0565,
+      "nearest_training_record": null
+    },
+    "cg:conflict-contested-root-cause:01": {
+      "max_similarity_to_other_splits": 0.0393,
+      "nearest_training_record": null
+    },
+    "cg:conflict-contested-root-cause:02": {
+      "max_similarity_to_other_splits": 0.04,
+      "nearest_training_record": null
+    },
+    "cg:conflict-design-review:01": {
+      "max_similarity_to_other_splits": 0.0463,
+      "nearest_training_record": "cg:conflict-stakeholder-priorities:01"
+    },
+    "cg:conflict-design-review:02": {
+      "max_similarity_to_other_splits": 0.0459,
+      "nearest_training_record": "cg:conflict-stakeholder-priorities:01"
+    },
+    "cg:critique-security-review:01": {
+      "max_similarity_to_other_splits": 0.0281,
+      "nearest_training_record": null
+    },
+    "cg:critique-security-review:02": {
+      "max_similarity_to_other_splits": 0.0284,
+      "nearest_training_record": null
+    },
+    "cg:debug-flaky-test:01": {
+      "max_similarity_to_other_splits": 0.0392,
+      "nearest_training_record": "cg:refuse-unknown-reference:01"
+    },
+    "cg:debug-flaky-test:02": {
+      "max_similarity_to_other_splits": 0.0392,
+      "nearest_training_record": "cg:refuse-unknown-reference:01"
+    },
+    "cg:debug-memory-leak:01": {
+      "max_similarity_to_other_splits": 0.0398,
+      "nearest_training_record": "cg:device-battery-drain:01"
+    },
+    "cg:debug-memory-leak:02": {
+      "max_similarity_to_other_splits": 0.0398,
+      "nearest_training_record": "cg:device-battery-drain:01"
+    },
+    "cg:device-wifi-drop:01": {
+      "max_similarity_to_other_splits": 0.0571,
+      "nearest_training_record": "cg:capplan-ci-runners:01"
+    },
+    "cg:device-wifi-drop:02": {
+      "max_similarity_to_other_splits": 0.0567,
+      "nearest_training_record": "cg:capplan-ci-runners:01"
+    },
+    "cg:escalate-low-confidence:01": {
+      "max_similarity_to_other_splits": 0.0816,
+      "nearest_training_record": "cg:refuse-unknown-reference:01"
+    },
+    "cg:escalate-low-confidence:02": {
+      "max_similarity_to_other_splits": 0.0784,
+      "nearest_training_record": "cg:refuse-unknown-reference:01"
+    },
+    "cg:incomplete-vendor-claims:01": {
+      "max_similarity_to_other_splits": 0.0756,
+      "nearest_training_record": null
+    },
+    "cg:incomplete-vendor-claims:02": {
+      "max_similarity_to_other_splits": 0.0732,
+      "nearest_training_record": null
+    },
+    "cg:plan-db-migration:01": {
+      "max_similarity_to_other_splits": 0.037,
+      "nearest_training_record": "cg:plan-release-train:02"
+    },
+    "cg:plan-db-migration:02": {
+      "max_similarity_to_other_splits": 0.0361,
+      "nearest_training_record": "cg:plan-release-train:02"
+    },
+    "cg:plan-onboarding:01": {
+      "max_similarity_to_other_splits": 0.0565,
+      "nearest_training_record": null
+    },
+    "cg:plan-onboarding:02": {
+      "max_similarity_to_other_splits": 0.0556,
+      "nearest_training_record": null
+    },
+    "cg:refuse-duplicate-ids:01": {
+      "max_similarity_to_other_splits": 0.0968,
+      "nearest_training_record": null
+    },
+    "cg:refuse-duplicate-ids:02": {
+      "max_similarity_to_other_splits": 0.0968,
+      "nearest_training_record": null
+    },
+    "cg:repo-dependency-audit:01": {
+      "max_similarity_to_other_splits": 0.0403,
+      "nearest_training_record": "cg:critique-market-claim:01"
+    },
+    "cg:repo-dependency-audit:02": {
+      "max_similarity_to_other_splits": 0.0403,
+      "nearest_training_record": "cg:critique-market-claim:01"
+    },
+    "cg:repo-ownership:01": {
+      "max_similarity_to_other_splits": 0.0398,
+      "nearest_training_record": null
+    },
+    "cg:repo-ownership:02": {
+      "max_similarity_to_other_splits": 0.04,
+      "nearest_training_record": null
+    },
+    "cg:req-audit-log:01": {
+      "max_similarity_to_other_splits": 0.0452,
+      "nearest_training_record": null
+    },
+    "cg:req-audit-log:02": {
+      "max_similarity_to_other_splits": 0.0452,
+      "nearest_training_record": null
+    },
+    "cg:req-notifications:01": {
+      "max_similarity_to_other_splits": 0.0482,
+      "nearest_training_record": "cg:req-export-feature:02"
+    },
+    "cg:req-notifications:02": {
+      "max_similarity_to_other_splits": 0.0479,
+      "nearest_training_record": "cg:req-export-feature:02"
+    },
+    "cg:risk-data-loss:01": {
+      "max_similarity_to_other_splits": 0.0545,
+      "nearest_training_record": null
+    },
+    "cg:risk-data-loss:02": {
+      "max_similarity_to_other_splits": 0.0545,
+      "nearest_training_record": null
+    },
+    "cg:tradeoff-hosting:01": {
+      "max_similarity_to_other_splits": 0.0631,
+      "nearest_training_record": "cg:uncertain-close-call:01"
+    },
+    "cg:tradeoff-hosting:02": {
+      "max_similarity_to_other_splits": 0.0614,
+      "nearest_training_record": "cg:uncertain-close-call:01"
+    },
+    "cg:uncertain-forecast:01": {
+      "max_similarity_to_other_splits": 0.0569,
+      "nearest_training_record": "cg:risk-vendor:02"
+    },
+    "cg:uncertain-forecast:02": {
+      "max_similarity_to_other_splits": 0.056,
+      "nearest_training_record": "cg:risk-vendor:02"
+    },
+    "cg:uncertain-single-source:01": {
+      "max_similarity_to_other_splits": 0.0756,
+      "nearest_training_record": null
+    },
+    "cg:uncertain-single-source:02": {
+      "max_similarity_to_other_splits": 0.0732,
+      "nearest_training_record": null
+    }
+  },
+  "threshold": 0.8
+}

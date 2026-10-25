@@ -1,0 +1,88 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "plan-db-migration",
+  "category": "planning",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "database"
+  ],
+  "instruction": "Plan the move from ${old} to ${new}: dual writes, backfill, verification, cutover and cleanup. Which tasks have slack, and what is the earliest finish?",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "Migrate ${old} to ${new}"
+      },
+      "tasks": [
+        {
+          "id": "dualwrite",
+          "title": "Enable dual writes",
+          "effort": 2
+        },
+        {
+          "id": "backfill",
+          "title": "Backfill history",
+          "effort": "${backfill}",
+          "depends_on": [
+            "dualwrite"
+          ]
+        },
+        {
+          "id": "verify",
+          "title": "Verify row counts and checksums",
+          "effort": 2,
+          "depends_on": [
+            "backfill"
+          ]
+        },
+        {
+          "id": "runbook",
+          "title": "Write cutover runbook",
+          "effort": 1
+        },
+        {
+          "id": "cutover",
+          "title": "Cut over reads",
+          "effort": 1,
+          "depends_on": [
+            "verify",
+            "runbook"
+          ]
+        },
+        {
+          "id": "cleanup",
+          "title": "Drop the old ${old} tables",
+          "depends_on": [
+            "cutover"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "old": "MySQL 5.7",
+        "new": "PostgreSQL 16",
+        "backfill": 5
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "old": "a self-hosted Redis",
+        "new": "a managed cache",
+        "backfill": 1
+      }
+    }
+  ]
+}

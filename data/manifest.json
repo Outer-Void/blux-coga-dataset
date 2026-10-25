@@ -1,0 +1,197 @@
+{
+  "canary": "e8c0a0fe-edd6-49ae-9ac6-b19b680690dc",
+  "categories": {
+    "adversarial-conflicting-instructions": {
+      "adversarial": 8,
+      "holdout": 0,
+      "regression": 0,
+      "test": 0,
+      "train": 0,
+      "validation": 0
+    },
+    "architecture-decomposition": {
+      "adversarial": 0,
+      "holdout": 2,
+      "regression": 0,
+      "test": 0,
+      "train": 3,
+      "validation": 2
+    },
+    "capability-planning": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 2
+    },
+    "conflict-resolution": {
+      "adversarial": 0,
+      "holdout": 2,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 0
+    },
+    "debugging-hypotheses": {
+      "adversarial": 0,
+      "holdout": 2,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 0
+    },
+    "device-diagnosis-planning": {
+      "adversarial": 0,
+      "holdout": 2,
+      "regression": 0,
+      "test": 0,
+      "train": 3,
+      "validation": 2
+    },
+    "evidence-critique": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 2
+    },
+    "incomplete-evidence": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 2
+    },
+    "planning": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 2,
+      "test": 2,
+      "train": 3,
+      "validation": 0
+    },
+    "refusal-escalation": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 2,
+      "test": 2,
+      "train": 3,
+      "validation": 0
+    },
+    "repository-analysis": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 2,
+      "test": 2,
+      "train": 3,
+      "validation": 0
+    },
+    "requirements-extraction": {
+      "adversarial": 0,
+      "holdout": 2,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 0
+    },
+    "risk-analysis": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 2,
+      "test": 0,
+      "train": 3,
+      "validation": 2
+    },
+    "tradeoff-analysis": {
+      "adversarial": 0,
+      "holdout": 0,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 2
+    },
+    "uncertainty-handling": {
+      "adversarial": 0,
+      "holdout": 2,
+      "regression": 0,
+      "test": 2,
+      "train": 3,
+      "validation": 0
+    }
+  },
+  "dataset": "blux-coga-dataset",
+  "engines": [
+    {
+      "commit": "64375dcc638c63dad31c817b88cb605a6452cf6d",
+      "name": "coga",
+      "package": "blux-coga",
+      "version": "2.0.0"
+    }
+  ],
+  "excluded": [],
+  "files": {
+    "data/adversarial.jsonl": {
+      "records": 8,
+      "sha256": "a8d876732b66355d1fe7f45ffe18f89c25fcd128c825b9a40d18ad8d8a471e72"
+    },
+    "data/contamination.json": {
+      "records": 0,
+      "sha256": "33ca5fdc55808c069275f8de96ef3075a0e31b86dcb5197039c69c5d57480455"
+    },
+    "data/holdout.jsonl": {
+      "records": 12,
+      "sha256": "d1f5404e8cfc70abcd869b87ffeada2ea77f89748ad2944011fd79b444988638"
+    },
+    "data/regression.jsonl": {
+      "records": 8,
+      "sha256": "1fa978b552da318df80c84e788f1d558f4461c080be5f8c3757598dcc88526ca"
+    },
+    "data/test.jsonl": {
+      "records": 22,
+      "sha256": "51e0be15a6e58246d973401bc993e16d93f756178d652af339511291f2614d3b"
+    },
+    "data/train.jsonl": {
+      "records": 42,
+      "sha256": "63771a499223e389c2883d5315f8ba0a057d3f9aa927d1c47cf234e0122cf6d4"
+    },
+    "data/validation.jsonl": {
+      "records": 14,
+      "sha256": "5339903f2d76f2d173515ef1547523123fe6d3e29ae4153052a7b8af3da8c04f"
+    }
+  },
+  "generator": {
+    "name": "dstool",
+    "version": "1.0.0"
+  },
+  "license": {
+    "file": "LICENSE",
+    "name": "BLUX Proprietary License",
+    "spdx": "LicenseRef-BLUX-Proprietary"
+  },
+  "protected_splits": [
+    "test",
+    "holdout",
+    "adversarial",
+    "regression"
+  ],
+  "record_count": 106,
+  "records_sha256": "725c56f049bf65a28ba23b729a8b9d3b2d493a6fbdf5a9ae50a89e0f8e4e8fae",
+  "release_date": "2026-10-25",
+  "schema": "blux.dataset-manifest",
+  "splits": {
+    "adversarial": 8,
+    "holdout": 12,
+    "regression": 8,
+    "test": 22,
+    "train": 42,
+    "validation": 14
+  },
+  "training_splits": [
+    "train",
+    "validation"
+  ],
+  "version": "2.0.0"
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "uncertain-forecast",
+  "category": "uncertainty-handling",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "risk",
+    "forecast"
+  ],
+  "instruction": "Score the ${quarter} forecast risks (churn and a slipping deal), where the likelihoods are guesses. The output must say which likelihoods lack support.",
+  "input": {
+    "capability": "reason.risk",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "risks": [
+        {
+          "id": "churn",
+          "title": "Churn rises",
+          "likelihood": 0.4,
+          "impact": 3
+        },
+        {
+          "id": "deal",
+          "title": "Large deal slips",
+          "likelihood": 0.5,
+          "impact": 4,
+          "mitigations": [
+            {
+              "id": "pipeline",
+              "applies_to": "impact",
+              "reduction": 0.3
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "quarter": "Q1"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "quarter": "next half-year"
+      }
+    }
+  ]
+}

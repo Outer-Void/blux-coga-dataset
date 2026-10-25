@@ -1,0 +1,128 @@
+{
+  "$id": "urn:outervoid:dataset:manifest.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "canary": {
+      "type": "string"
+    },
+    "categories": {
+      "type": "object"
+    },
+    "dataset": {
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "type": "string"
+    },
+    "engines": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "commit": {
+            "pattern": "^[0-9a-f]{40}$",
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "package": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "package",
+          "version",
+          "commit"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "excluded": {
+      "type": "array"
+    },
+    "files": {
+      "additionalProperties": {
+        "required": [
+          "sha256",
+          "records"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "generator": {
+      "type": "object"
+    },
+    "license": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "spdx": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "spdx",
+        "name"
+      ],
+      "type": "object"
+    },
+    "protected_splits": {
+      "type": "array"
+    },
+    "record_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "records_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "release_date": {
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+      "type": "string"
+    },
+    "schema": {
+      "const": "blux.dataset-manifest"
+    },
+    "splits": {
+      "type": "object"
+    },
+    "training_splits": {
+      "type": "array"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema",
+    "dataset",
+    "version",
+    "release_date",
+    "license",
+    "generator",
+    "engines",
+    "canary",
+    "splits",
+    "categories",
+    "files",
+    "records_sha256",
+    "record_count",
+    "protected_splits",
+    "training_splits",
+    "excluded"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "refuse-unknown-reference",
+  "category": "refusal-escalation",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "errors",
+    "references"
+  ],
+  "instruction": "The request cites evidence ${ref} that was never provided for the ${topic} claim. The engine must refuse rather than guess what it said.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "known",
+          "claim": "A provided observation about ${topic}",
+          "kind": "observation",
+          "reliability": 0.8
+        }
+      ],
+      "claims": [
+        {
+          "id": "claim",
+          "statement": "${topic} is ready",
+          "supported_by": [
+            "known",
+            "${ref}"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "ref": "E404",
+        "topic": "the release"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "ref": "missing-report",
+        "topic": "the migration"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "ref": "ghost",
+        "topic": "the rollout"
+      }
+    }
+  ]
+}

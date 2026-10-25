@@ -1,0 +1,94 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "conflict-stakeholder-priorities",
+  "category": "conflict-resolution",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "rank",
+    "stakeholders"
+  ],
+  "instruction": "${a}, ${b} and ${c} disagree on priorities. Rank the initiatives from their pairwise preferences and report any preference cycle.",
+  "input": {
+    "capability": "reason.rank",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "items": [
+        {
+          "id": "${a}",
+          "title": "${a}"
+        },
+        {
+          "id": "${b}",
+          "title": "${b}"
+        },
+        {
+          "id": "${c}",
+          "title": "${c}"
+        },
+        {
+          "id": "${d}",
+          "title": "${d}"
+        }
+      ],
+      "comparisons": [
+        {
+          "winner": "${a}",
+          "loser": "${b}",
+          "weight": 2
+        },
+        {
+          "winner": "${b}",
+          "loser": "${c}"
+        },
+        {
+          "winner": "${c}",
+          "loser": "${a}"
+        },
+        {
+          "winner": "${a}",
+          "loser": "${d}",
+          "weight": 3
+        },
+        {
+          "winner": "${b}",
+          "loser": "${d}"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "a": "reliability",
+        "b": "growth",
+        "c": "compliance",
+        "d": "rebrand"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "a": "accessibility",
+        "b": "performance",
+        "c": "localization",
+        "d": "theming"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "a": "security",
+        "b": "onboarding",
+        "c": "analytics",
+        "d": "gamification"
+      }
+    }
+  ]
+}

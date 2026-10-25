@@ -1,0 +1,101 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "capplan-team-capacity",
+  "category": "capability-planning",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "capacity"
+  ],
+  "instruction": "With ${people} engineers, schedule building the ${capability}: research, prototype, API, SDK, docs and launch. Compare the parallel makespan with the critical path.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "Deliver the ${capability}"
+      },
+      "max_parallel": "${people}",
+      "tasks": [
+        {
+          "id": "research",
+          "title": "Research",
+          "effort": 2
+        },
+        {
+          "id": "prototype",
+          "title": "Prototype",
+          "effort": 3,
+          "depends_on": [
+            "research"
+          ]
+        },
+        {
+          "id": "api",
+          "title": "Public API",
+          "effort": "${api}",
+          "depends_on": [
+            "prototype"
+          ]
+        },
+        {
+          "id": "sdk",
+          "title": "SDK",
+          "effort": 3,
+          "depends_on": [
+            "api"
+          ]
+        },
+        {
+          "id": "docs",
+          "title": "Docs",
+          "effort": 2,
+          "depends_on": [
+            "api"
+          ]
+        },
+        {
+          "id": "launch",
+          "title": "Launch",
+          "effort": 1,
+          "depends_on": [
+            "sdk",
+            "docs"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "people": 1,
+        "capability": "webhook platform",
+        "api": 4
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "people": 2,
+        "capability": "plugin system",
+        "api": 6
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "people": 3,
+        "capability": "usage-based billing",
+        "api": 5
+      }
+    }
+  ]
+}

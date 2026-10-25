@@ -1,0 +1,110 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "risk-launch",
+  "category": "risk-analysis",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "risk",
+    "launch"
+  ],
+  "instruction": "Score the launch risks for ${launch}: capacity, a ${dep} outage and a botched data migration. Apply the mitigations and list what stays above an appetite of ${appetite}.",
+  "input": {
+    "capability": "reason.risk",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "appetite": "${appetite}",
+      "evidence": [
+        {
+          "id": "load",
+          "claim": "Load test reached 2x expected peak",
+          "kind": "measurement",
+          "reliability": 0.9
+        },
+        {
+          "id": "sla",
+          "claim": "${dep} publishes a 99.9% SLA",
+          "kind": "document",
+          "reliability": 0.6
+        }
+      ],
+      "risks": [
+        {
+          "id": "capacity",
+          "title": "Capacity shortfall at peak",
+          "likelihood": 0.3,
+          "impact": 4,
+          "evidence": [
+            "load"
+          ],
+          "mitigations": [
+            {
+              "id": "autoscale",
+              "applies_to": "likelihood",
+              "reduction": 0.5,
+              "evidence": [
+                "load"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "outage",
+          "title": "${dep} outage",
+          "likelihood": "${p_outage}",
+          "impact": 5,
+          "evidence": [
+            "sla"
+          ],
+          "mitigations": [
+            {
+              "id": "fallback",
+              "applies_to": "impact",
+              "reduction": 0.4
+            }
+          ]
+        },
+        {
+          "id": "migration",
+          "title": "Data migration corrupts records",
+          "likelihood": 0.15,
+          "impact": 5
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "launch": "the loyalty programme",
+        "dep": "payment provider",
+        "appetite": 1.5,
+        "p_outage": 0.2
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "launch": "the new search page",
+        "dep": "managed search",
+        "appetite": 2,
+        "p_outage": 0.35
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "launch": "regional expansion",
+        "dep": "CDN",
+        "appetite": 1,
+        "p_outage": 0.1
+      }
+    }
+  ]
+}

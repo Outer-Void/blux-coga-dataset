@@ -1,0 +1,3 @@
+# The pinned engine (records are only reproducible with it) and the toolkit's one dependency.
+blux-coga @ git+https://github.com/Outer-Void/blux-coga.git@64375dcc638c63dad31c817b88cb605a6452cf6d
+jsonschema>=4.19

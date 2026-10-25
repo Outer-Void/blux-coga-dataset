@@ -1,0 +1,94 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "arch-data-platform",
+  "category": "architecture-decomposition",
+  "split": "holdout",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "decompose",
+    "data"
+  ],
+  "instruction": "Lay out the ${platform} as a component tree: ingestion feeds a ${lake}, the catalog indexes it, and dashboards read through an access layer. Identify leaves and untraced components.",
+  "input": {
+    "capability": "reason.decompose",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "Stand up the ${platform}",
+        "acceptance": [
+          {
+            "id": "fresh",
+            "statement": "Data lands within ${hours} hours",
+            "covered_by": [
+              "ingest"
+            ]
+          },
+          {
+            "id": "governed",
+            "statement": "Every table has an owner",
+            "covered_by": [
+              "catalog"
+            ]
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "ingest",
+          "statement": "Batch and stream ingestion"
+        },
+        {
+          "id": "lake",
+          "statement": "${lake} storage layer",
+          "depends_on": [
+            "ingest"
+          ]
+        },
+        {
+          "id": "catalog",
+          "statement": "Metadata catalog",
+          "depends_on": [
+            "lake"
+          ]
+        },
+        {
+          "id": "access",
+          "statement": "Row-level access layer",
+          "parent": "catalog"
+        },
+        {
+          "id": "dashboards",
+          "statement": "Executive dashboards",
+          "parent": "access"
+        },
+        {
+          "id": "sandbox",
+          "statement": "Analyst sandbox environment"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "platform": "analytics platform",
+        "lake": "columnar lake",
+        "hours": "4"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "platform": "telemetry warehouse",
+        "lake": "time-series store",
+        "hours": "1"
+      }
+    }
+  ]
+}

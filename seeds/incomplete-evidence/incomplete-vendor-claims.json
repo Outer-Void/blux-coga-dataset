@@ -1,0 +1,61 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "incomplete-vendor-claims",
+  "category": "incomplete-evidence",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "critique",
+    "procurement"
+  ],
+  "instruction": "A vendor claims ${claim}, citing only their own material. Critique what is missing before procurement signs off.",
+  "input": {
+    "capability": "reason.critique",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "datasheet",
+          "claim": "Vendor datasheet",
+          "kind": "document",
+          "reliability": 0.4,
+          "source": {
+            "uri": "https://example.org/datasheet"
+          }
+        }
+      ],
+      "claims": [
+        {
+          "id": "vendor",
+          "statement": "${claim}",
+          "supported_by": [
+            "datasheet"
+          ]
+        },
+        {
+          "id": "fit",
+          "statement": "It fits our workload"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "claim": "99.99% uptime"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "claim": "SOC 2 Type II coverage"
+      }
+    }
+  ]
+}

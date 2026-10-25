@@ -1,0 +1,137 @@
+{
+  "$id": "urn:outervoid:dataset:seed.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "category": {
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "type": "string"
+    },
+    "family": {
+      "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+      "type": "string"
+    },
+    "input": {
+      "type": "object"
+    },
+    "instruction": {
+      "maxLength": 4000,
+      "minLength": 1,
+      "type": "string"
+    },
+    "license": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "spdx": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "spdx",
+        "name"
+      ],
+      "type": "object"
+    },
+    "origin": {
+      "enum": [
+        "synthetic-authored",
+        "imported"
+      ]
+    },
+    "review": {
+      "additionalProperties": false,
+      "properties": {
+        "note": {
+          "type": "string"
+        },
+        "reviewer": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "approved",
+            "pending"
+          ]
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "schema": {
+      "const": "blux.dataset-seed"
+    },
+    "source": {
+      "description": "Where an imported seed came from.",
+      "type": "string"
+    },
+    "split": {
+      "enum": [
+        "train",
+        "validation",
+        "test",
+        "holdout",
+        "adversarial",
+        "regression"
+      ]
+    },
+    "tags": {
+      "items": {
+        "pattern": "^[a-z0-9][a-z0-9-]{1,62}$",
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "variants": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "pattern": "^[0-9]{2}$",
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "params": {
+            "type": "object"
+          },
+          "retired": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "params"
+        ],
+        "type": "object"
+      },
+      "maxItems": 99,
+      "minItems": 1,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema",
+    "family",
+    "category",
+    "split",
+    "origin",
+    "review",
+    "instruction",
+    "input",
+    "variants"
+  ],
+  "type": "object"
+}

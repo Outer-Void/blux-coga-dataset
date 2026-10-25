@@ -1,0 +1,76 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "req-notifications",
+  "category": "requirements-extraction",
+  "split": "holdout",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "decompose",
+    "product"
+  ],
+  "instruction": "From the brief \"${brief}\", derive notification requirements across channels, preferences and quiet hours, and trace them to acceptance criteria.",
+  "input": {
+    "capability": "reason.decompose",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "${brief}",
+        "acceptance": [
+          {
+            "id": "optout",
+            "statement": "Users can opt out per channel",
+            "covered_by": [
+              "prefs"
+            ]
+          },
+          {
+            "id": "quiet",
+            "statement": "Nothing is sent during quiet hours",
+            "covered_by": [
+              "scheduler"
+            ]
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "channels",
+          "statement": "${channels} delivery"
+        },
+        {
+          "id": "prefs",
+          "statement": "Preference centre",
+          "parent": "channels"
+        },
+        {
+          "id": "scheduler",
+          "statement": "Quiet-hours scheduler",
+          "depends_on": [
+            "prefs"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "brief": "Remind patients about appointments",
+        "channels": "SMS and e-mail"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "brief": "Alert drivers about route changes",
+        "channels": "Push and in-app"
+      }
+    }
+  ]
+}

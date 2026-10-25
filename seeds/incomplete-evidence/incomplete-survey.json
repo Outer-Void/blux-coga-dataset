@@ -1,0 +1,60 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "incomplete-survey",
+  "category": "incomplete-evidence",
+  "split": "validation",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "research"
+  ],
+  "instruction": "Only ${n} users answered the ${topic} survey. Analyze what the claims can and cannot rest on.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "survey",
+          "claim": "${n} responses, self-selected",
+          "kind": "dataset",
+          "reliability": 0.3
+        }
+      ],
+      "claims": [
+        {
+          "id": "liked",
+          "statement": "Users like the ${topic}",
+          "supported_by": [
+            "survey"
+          ]
+        },
+        {
+          "id": "retention",
+          "statement": "The ${topic} improves retention"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "n": "eleven",
+        "topic": "new editor"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "n": "six",
+        "topic": "onboarding tour"
+      }
+    }
+  ]
+}

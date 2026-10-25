@@ -1,0 +1,84 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "arch-mobile-offline",
+  "category": "architecture-decomposition",
+  "split": "validation",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "decompose",
+    "mobile"
+  ],
+  "instruction": "Decompose offline support for the ${app} app into parts: local cache, sync engine, conflict handling, and a settings screen. Which acceptance criteria are still uncovered?",
+  "input": {
+    "capability": "reason.decompose",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "goal": {
+        "statement": "Let ${app} work without a network for a full day",
+        "acceptance": [
+          {
+            "id": "read",
+            "statement": "Recent ${things} are readable offline",
+            "covered_by": [
+              "cache"
+            ]
+          },
+          {
+            "id": "write",
+            "statement": "Edits made offline reach the server",
+            "covered_by": [
+              "sync"
+            ]
+          },
+          {
+            "id": "notice",
+            "statement": "Users see when data is stale"
+          }
+        ]
+      },
+      "items": [
+        {
+          "id": "cache",
+          "statement": "Local cache of recent ${things}"
+        },
+        {
+          "id": "sync",
+          "statement": "Background sync engine",
+          "depends_on": [
+            "cache"
+          ]
+        },
+        {
+          "id": "conflicts",
+          "statement": "Conflict handling for concurrent edits",
+          "parent": "sync"
+        },
+        {
+          "id": "settings",
+          "statement": "Settings screen toggle for offline mode"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "app": "field notes",
+        "things": "notes"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "app": "inventory scanner",
+        "things": "stock counts"
+      }
+    }
+  ]
+}

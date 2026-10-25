@@ -1,0 +1,73 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "device-battery-drain",
+  "category": "device-diagnosis-planning",
+  "split": "validation",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "device"
+  ],
+  "instruction": "The ${device} fleet loses ${pct} battery overnight. Weigh wakelock, radio and thermal hypotheses against the telemetry before planning a fix.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "wakelock",
+          "claim": "A sync service holds wakelocks for hours",
+          "kind": "measurement",
+          "reliability": 0.85
+        },
+        {
+          "id": "radio",
+          "claim": "Cellular radio time is normal",
+          "kind": "measurement",
+          "reliability": 0.8
+        }
+      ],
+      "claims": [
+        {
+          "id": "wakelocks",
+          "statement": "Wakelocks drain the battery",
+          "supported_by": [
+            "wakelock"
+          ]
+        },
+        {
+          "id": "radios",
+          "statement": "The cellular radio drains it",
+          "contradicted_by": [
+            "radio"
+          ]
+        },
+        {
+          "id": "thermal",
+          "statement": "Thermal throttling drains it"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "device": "handheld scanner",
+        "pct": "30%"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "device": "kiosk tablet",
+        "pct": "45%"
+      }
+    }
+  ]
+}

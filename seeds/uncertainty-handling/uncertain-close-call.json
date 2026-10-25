@@ -1,0 +1,85 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "uncertain-close-call",
+  "category": "uncertainty-handling",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "compare",
+    "sensitivity"
+  ],
+  "instruction": "${p} and ${q} score almost the same for the ${decision}. Report the margin, the confidence, and whether a weight change would flip the leader.",
+  "input": {
+    "capability": "reason.compare",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "criteria": [
+        {
+          "id": "fit",
+          "weight": 2,
+          "direction": "max"
+        },
+        {
+          "id": "price",
+          "weight": 2,
+          "direction": "min"
+        }
+      ],
+      "options": [
+        {
+          "id": "${p}",
+          "title": "${p}",
+          "values": {
+            "fit": 8,
+            "price": "${pp}"
+          }
+        },
+        {
+          "id": "${q}",
+          "title": "${q}",
+          "values": {
+            "fit": 7,
+            "price": "${qp}"
+          }
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "decision": "office move",
+        "p": "downtown",
+        "q": "harbour",
+        "pp": 100,
+        "qp": 92
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "decision": "CRM choice",
+        "p": "crm-a",
+        "q": "crm-b",
+        "pp": 55,
+        "qp": 50
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "decision": "conference venue",
+        "p": "lisbon",
+        "q": "porto",
+        "pp": 30,
+        "qp": 27
+      }
+    }
+  ]
+}

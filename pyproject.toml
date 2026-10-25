@@ -1,0 +1,24 @@
+# Tool configuration only: this repository is a dataset, not a package. Run the toolkit with `python -m dstool`.
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+include = ["dstool/**/*.py", "tests/**/*.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "BLE", "RUF", "SIM", "C4"]
+ignore = ["S101", "S603", "S607"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["dstool"]
+
+[[tool.mypy.overrides]]
+module = ["jsonschema", "jsonschema.*", "blux_coga.*", "blux_ca.*"]
+ignore_missing_imports = true

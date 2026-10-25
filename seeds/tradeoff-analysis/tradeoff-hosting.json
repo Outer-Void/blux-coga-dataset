@@ -1,0 +1,82 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "tradeoff-hosting",
+  "category": "tradeoff-analysis",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "compare",
+    "hosting"
+  ],
+  "instruction": "Should the ${product} run on ${x} or ${y}? Weigh monthly cost, deploy time and on-call burden, and say whether either option dominates the other.",
+  "input": {
+    "capability": "reason.compare",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "criteria": [
+        {
+          "id": "monthly",
+          "weight": 2,
+          "direction": "min"
+        },
+        {
+          "id": "deploy",
+          "weight": 1,
+          "direction": "min"
+        },
+        {
+          "id": "oncall",
+          "weight": 2,
+          "direction": "min"
+        }
+      ],
+      "options": [
+        {
+          "id": "${x}",
+          "title": "${x}",
+          "values": {
+            "monthly": "${xm}",
+            "deploy": 12,
+            "oncall": 3
+          }
+        },
+        {
+          "id": "${y}",
+          "title": "${y}",
+          "values": {
+            "monthly": "${ym}",
+            "deploy": 4,
+            "oncall": 1
+          }
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "product": "billing portal",
+        "x": "kubernetes",
+        "y": "paas",
+        "xm": 900,
+        "ym": 1400
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "product": "docs site",
+        "x": "vps",
+        "y": "static-cdn",
+        "xm": 60,
+        "ym": 20
+      }
+    }
+  ]
+}

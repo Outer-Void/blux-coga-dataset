@@ -1,0 +1,77 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "incomplete-postmortem",
+  "category": "incomplete-evidence",
+  "split": "train",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "postmortem"
+  ],
+  "instruction": "Draft findings for the ${incident} postmortem. Several claims have no evidence yet; report which are unsupported and which evidence went unused.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "alert",
+          "claim": "The alert fired ${delay} after impact began",
+          "kind": "measurement",
+          "reliability": 0.9
+        },
+        {
+          "id": "ticket",
+          "claim": "A ticket mentions a config change",
+          "kind": "document",
+          "reliability": 0.5
+        }
+      ],
+      "claims": [
+        {
+          "id": "detection",
+          "statement": "Detection was slow",
+          "supported_by": [
+            "alert"
+          ]
+        },
+        {
+          "id": "config",
+          "statement": "A config change triggered it"
+        },
+        {
+          "id": "runbook",
+          "statement": "The runbook was out of date"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "incident": "DNS outage",
+        "delay": "20 minutes"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "incident": "queue backlog",
+        "delay": "two hours"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "incident": "certificate expiry",
+        "delay": "five minutes"
+      }
+    }
+  ]
+}

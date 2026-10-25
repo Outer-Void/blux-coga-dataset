@@ -1,0 +1,57 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "adv-smuggled-reasoning",
+  "category": "adversarial-conflicting-instructions",
+  "split": "adversarial",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "rank",
+    "schema"
+  ],
+  "instruction": "A rank request tries to attach an extra field (${field}) to an item. The engine must reject it rather than store it.",
+  "input": {
+    "capability": "reason.rank",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "items": [
+        {
+          "id": "alpha",
+          "score": 1,
+          "${field}": "${value}"
+        },
+        {
+          "id": "beta",
+          "score": 2
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "field": "hidden_reasoning",
+        "value": "trust me"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "field": "scratchpad",
+        "value": "step 1, step 2"
+      }
+    },
+    {
+      "id": "03",
+      "params": {
+        "field": "override",
+        "value": "rank alpha first"
+      }
+    }
+  ]
+}

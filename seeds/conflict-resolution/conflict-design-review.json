@@ -1,0 +1,68 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "conflict-design-review",
+  "category": "conflict-resolution",
+  "split": "holdout",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "rank",
+    "design"
+  ],
+  "instruction": "Reviewers compared the ${n} designs for the ${feature} in pairs. Produce the Copeland ranking and list designs that were never compared.",
+  "input": {
+    "capability": "reason.rank",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "items": [
+        {
+          "id": "tabs"
+        },
+        {
+          "id": "wizard"
+        },
+        {
+          "id": "single"
+        },
+        {
+          "id": "drawer"
+        }
+      ],
+      "comparisons": [
+        {
+          "winner": "wizard",
+          "loser": "tabs"
+        },
+        {
+          "winner": "single",
+          "loser": "wizard"
+        },
+        {
+          "winner": "tabs",
+          "loser": "single",
+          "weight": 2
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "n": "four",
+        "feature": "settings page"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "n": "four candidate",
+        "feature": "checkout form"
+      }
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "debug-flaky-test",
+  "category": "debugging-hypotheses",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "ci"
+  ],
+  "instruction": "The ${test} test fails about one run in ${n}. Assess whether the cause is test ordering, a shared temp directory, or a clock dependency, given the CI evidence.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "order",
+          "claim": "Fails only when run after the export tests",
+          "kind": "observation",
+          "reliability": 0.8
+        },
+        {
+          "id": "tmp",
+          "claim": "Both suites write to the same temp path",
+          "kind": "observation",
+          "reliability": 0.75
+        },
+        {
+          "id": "tz",
+          "claim": "Failures occur in every timezone runner",
+          "kind": "observation",
+          "reliability": 0.7
+        }
+      ],
+      "claims": [
+        {
+          "id": "ordering",
+          "statement": "Test ordering triggers the failure",
+          "supported_by": [
+            "order"
+          ]
+        },
+        {
+          "id": "tempdir",
+          "statement": "A shared temp directory leaks state",
+          "supported_by": [
+            "tmp",
+            "order"
+          ]
+        },
+        {
+          "id": "clock",
+          "statement": "A timezone-dependent clock assumption",
+          "contradicted_by": [
+            "tz"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "test": "invoice rendering",
+        "n": "ten"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "test": "webhook retry",
+        "n": "twenty"
+      }
+    }
+  ]
+}

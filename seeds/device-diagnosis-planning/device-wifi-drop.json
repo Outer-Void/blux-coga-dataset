@@ -1,0 +1,78 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "device-wifi-drop",
+  "category": "device-diagnosis-planning",
+  "split": "holdout",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "plan",
+    "network"
+  ],
+  "instruction": "Plan the investigation of ${device} units dropping Wi-Fi every ${interval}: reproduce, capture radio logs, compare firmware, test another access point, then decide on a rollback.",
+  "input": {
+    "capability": "reason.plan",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "max_parallel": 2,
+      "tasks": [
+        {
+          "id": "repro",
+          "title": "Reproduce on a bench unit",
+          "effort": 2
+        },
+        {
+          "id": "radiolog",
+          "title": "Capture radio logs",
+          "effort": 1,
+          "depends_on": [
+            "repro"
+          ]
+        },
+        {
+          "id": "firmware",
+          "title": "Compare firmware versions",
+          "effort": 1
+        },
+        {
+          "id": "otherap",
+          "title": "Test against another access point",
+          "effort": 1,
+          "depends_on": [
+            "repro"
+          ]
+        },
+        {
+          "id": "decide",
+          "title": "Decide on firmware rollback",
+          "effort": 1,
+          "depends_on": [
+            "radiolog",
+            "firmware",
+            "otherap"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "device": "warehouse printer",
+        "interval": "hour"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "device": "smart thermostat",
+        "interval": "few minutes"
+      }
+    }
+  ]
+}

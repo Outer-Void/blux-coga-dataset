@@ -1,0 +1,72 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "risk-data-loss",
+  "category": "risk-analysis",
+  "split": "regression",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "risk",
+    "backup"
+  ],
+  "instruction": "Pin the risk scores for losing ${data}: disk failure, operator error and ransomware, with backup mitigations applied. The bands and residuals must not drift.",
+  "input": {
+    "capability": "reason.risk",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "appetite": 1,
+      "risks": [
+        {
+          "id": "disk",
+          "title": "Disk failure",
+          "likelihood": 0.2,
+          "impact": 4,
+          "mitigations": [
+            {
+              "id": "raid",
+              "applies_to": "impact",
+              "reduction": 0.7
+            }
+          ]
+        },
+        {
+          "id": "operator",
+          "title": "Operator deletes ${data}",
+          "likelihood": 0.1,
+          "impact": 5,
+          "mitigations": [
+            {
+              "id": "snapshots",
+              "applies_to": "impact",
+              "reduction": 0.8
+            }
+          ]
+        },
+        {
+          "id": "ransomware",
+          "title": "Ransomware encrypts ${data}",
+          "likelihood": 0.05,
+          "impact": 5
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "data": "customer invoices"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "data": "build artifacts"
+      }
+    }
+  ]
+}

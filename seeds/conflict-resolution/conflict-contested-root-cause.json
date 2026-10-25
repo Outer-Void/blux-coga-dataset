@@ -1,0 +1,78 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "conflict-contested-root-cause",
+  "category": "conflict-resolution",
+  "split": "test",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "analyze",
+    "incident"
+  ],
+  "instruction": "Two teams blame different causes for the ${incident}. Weigh the networking and the ${other} claims, noting where evidence conflicts.",
+  "input": {
+    "capability": "reason.analyze",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "pcap",
+          "claim": "Packet captures show retransmits",
+          "kind": "measurement",
+          "reliability": 0.85
+        },
+        {
+          "id": "netok",
+          "claim": "Network team's dashboard shows no loss",
+          "kind": "observation",
+          "reliability": 0.8
+        },
+        {
+          "id": "deploy",
+          "claim": "${other} change shipped an hour before",
+          "kind": "document",
+          "reliability": 0.7
+        }
+      ],
+      "claims": [
+        {
+          "id": "network",
+          "statement": "Packet loss caused the ${incident}",
+          "supported_by": [
+            "pcap"
+          ],
+          "contradicted_by": [
+            "netok"
+          ]
+        },
+        {
+          "id": "release",
+          "statement": "The ${other} change caused the ${incident}",
+          "supported_by": [
+            "deploy"
+          ]
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "incident": "checkout outage",
+        "other": "TLS library"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "incident": "sync backlog",
+        "other": "serializer"
+      }
+    }
+  ]
+}

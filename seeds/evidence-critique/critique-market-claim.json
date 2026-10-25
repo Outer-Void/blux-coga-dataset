@@ -1,0 +1,79 @@
+{
+  "schema": "blux.dataset-seed",
+  "family": "critique-market-claim",
+  "category": "evidence-critique",
+  "split": "validation",
+  "origin": "synthetic-authored",
+  "review": {
+    "status": "approved",
+    "reviewer": "outer-void"
+  },
+  "tags": [
+    "critique",
+    "business"
+  ],
+  "instruction": "A deck says \"${claim}\". Critique the supporting evidence and identify duplicate or circular claims.",
+  "input": {
+    "capability": "reason.critique",
+    "request": {
+      "contract": "coga.request",
+      "version": 1,
+      "evidence": [
+        {
+          "id": "survey",
+          "claim": "Survey of ${n} existing customers",
+          "kind": "dataset",
+          "reliability": 0.5
+        },
+        {
+          "id": "analyst",
+          "claim": "Analyst estimate of market size",
+          "kind": "document",
+          "reliability": 0.6
+        }
+      ],
+      "claims": [
+        {
+          "id": "demand",
+          "statement": "${claim}",
+          "supported_by": [
+            "survey"
+          ],
+          "depends_on": [
+            "size"
+          ]
+        },
+        {
+          "id": "size",
+          "statement": "The market is large enough",
+          "supported_by": [
+            "analyst"
+          ],
+          "depends_on": [
+            "demand"
+          ]
+        },
+        {
+          "id": "dup",
+          "statement": "${claim}"
+        }
+      ]
+    }
+  },
+  "variants": [
+    {
+      "id": "01",
+      "params": {
+        "claim": "Customers want a premium tier",
+        "n": "forty"
+      }
+    },
+    {
+      "id": "02",
+      "params": {
+        "claim": "Teams will pay for SSO",
+        "n": "twelve"
+      }
+    }
+  ]
+}
