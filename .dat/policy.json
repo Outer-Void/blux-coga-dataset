@@ -1,0 +1,18 @@
+{
+ "contract": "dat.policy",
+ "version": 1,
+ "policy_id": "blux-coga-dataset-release",
+ "description": "blux-coga-dataset release gate (OV-49, F76). Suppressions are exact fingerprints of triaged non-secrets (test fakes, CI-local service credentials, refused development defaults, false positives); anything else stays blocking.",
+ "gate": {
+  "fail_on": "high",
+  "min_confidence": "medium"
+ },
+ "suppress": [
+  {
+   "rule_id": "secrets.private-key",
+   "path": "tests/test_dataset.py",
+   "fingerprint": "d8641ff87a0eef26db59da8f929fd6b0055814750ec74cde663ebecb3b68c06e",
+   "reason": "PEM header string in a test proving the dataset rejects private keys"
+  }
+ ]
+}
